@@ -1,0 +1,40 @@
+version: "3"
+services:
+  app:
+    build: ./app
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/app
+      # - ./app/etc/nginx:/etc/nginx
+      # - ./app/etc/ssl/private:/etc/ssl/private
+    depends_on:
+      - "api-gateway"
+    #   - db
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api-gateway:/api/src
+    # depends_on:
+    #   - db
+
+  # user-db:
+  #   image: mysql:5.7
+  #   ports:
+  #     - "32000:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #   volumes:
+  #     - ./users-db:/docker-entrypoint-initdb.d/:ro
+
+  # items-db:
+  #   image: mysql:5.7
+  #   ports:
+  #     - "42000:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #   volumes:
+  #     - ./items-db:/docker-entrypoint-initdb.d/:ro
