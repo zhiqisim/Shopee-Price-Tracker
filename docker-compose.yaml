@@ -1,40 +1,40 @@
 version: "3"
 services:
-  app:
-    build: ./app
-    ports:
-      - "80:80"
-    volumes:
-      - ./app:/app
-      # - ./app/etc/nginx:/etc/nginx
-      # - ./app/etc/ssl/private:/etc/ssl/private
-    depends_on:
-      - "api-gateway"
-    #   - db
-
-  api-gateway:
-    build: ./api-gateway
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./api-gateway:/api/src
-    # depends_on:
-    #   - db
-
-  # user-db:
-  #   image: mysql:5.7
+  # app:
+  #   build: ./app
   #   ports:
-  #     - "32000:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
+  #     - "80:80"
   #   volumes:
-  #     - ./users-db:/docker-entrypoint-initdb.d/:ro
+  #     - ./app:/app
+  #   depends_on:
+  #     - "api-gateway"
 
-  # items-db:
-  #   image: mysql:5.7
+  # api-gateway:
+  #   build: ./api-gateway
   #   ports:
-  #     - "42000:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
+  #     - "8080:8080"
   #   volumes:
-  #     - ./items-db:/docker-entrypoint-initdb.d/:ro
+  #     - ./api-gateway:/api/src
+  #   # depends_on:
+  #   #   - user-service
+  #   #   - items-service
+
+  user-db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db/user-db/storage:/var/lib/mysql:rw
+      - ./db/user-db:/docker-entrypoint-initdb.d/:ro
+
+  items-db:
+    image: mysql:5.7
+    ports:
+      - "42000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db/items-db/storage:/var/lib/mysql:rw
+      - ./db/items-db:/docker-entrypoint-initdb.d/:ro
