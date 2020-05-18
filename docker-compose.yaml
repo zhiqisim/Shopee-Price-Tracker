@@ -13,11 +13,18 @@ services:
   #   build: ./api-gateway
   #   ports:
   #     - "8080:8080"
-  #   volumes:
-  #     - ./api-gateway:/api/src
-  #   # depends_on:
-  #   #   - user-service
-  #   #   - items-service
+  #   depends_on:
+  #     - user-service
+  #     # - items-service
+  #   # volumes:
+  #   #   - ./api-gateway:/api
+
+  # user-service:
+  #   build: ./user-service
+  #   ports:
+  #     - "4040:4040"
+    # volumes:
+    #   - ./user-service:/user-service
 
   user-db:
     image: mysql:5.7

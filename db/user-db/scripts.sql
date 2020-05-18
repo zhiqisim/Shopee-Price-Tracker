@@ -14,7 +14,8 @@ CREATE UNIQUE INDEX user_index ON user (username);
 CREATE TABLE user_item (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
-    item_id BIGINT NOT NULL
+    item_id BIGINT NOT NULL,
+    UNIQUE KEY username_item_id_key (username, item_id)
 );
 
 CREATE INDEX user_item_index ON user_item (username);

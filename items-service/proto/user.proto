@@ -1,0 +1,113 @@
+
+syntax = "proto3";
+package proto;
+
+// Users
+message User {
+    // Username of user
+    string username = 1;
+
+    // password of user
+    string password = 2;
+}
+
+// Users
+message UserItem {
+    // // Username of user
+    string username = 1;
+
+    // item_id of user's item list
+    string item_id = 2;
+}
+
+// Request Login credentials
+message LoginRequest{
+    // User entity 
+    User user = 1;
+}
+
+// Contains response for Login credentials
+message LoginResponse{
+    // message as response to login
+    // "success": successful
+    // "error": error
+    string message = 1;
+}
+
+// Request to create user
+message SignupRequest{
+    // User entity 
+    User user = 1;
+}
+
+// Response to create user
+message SignupResponse{
+    // message as response to signup
+    // message as response to login
+    // "success": successful
+    // "error": error
+    string message = 1;
+}
+
+// Request logout
+message LogoutRequest{
+    // username  
+    string username = 1;
+}
+
+// Response to logout
+message LogoutResponse{
+    // message as response to logout
+    // message as response to login
+    // "success": successful
+    // "error": error
+    string message = 1;
+}
+
+// Request add items
+message AddItemRequest{
+    // UserItem entity 
+    UserItem userItem = 1;
+}
+
+// Response to user adding items
+message AddItemResponse{
+    // message as response to adding items
+    // "success": successful
+    // "error": error
+    string message = 1;
+}
+
+// Request list items
+message ListItemsRequest{
+    // username
+    string username = 1;
+}
+
+// Response to list items
+message ListItemsResponse{
+    // message as response to adding items
+    // "success": successful
+    // "error": error
+    string message = 1;
+
+    repeated string list_item_id = 2;
+}
+
+// Service to manage list of todo tasks
+service UserService {
+    // Login
+    rpc Login(LoginRequest) returns (LoginResponse);
+
+    // Signup
+    rpc Signup(SignupRequest) returns (SignupResponse);
+
+    // Logout 
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+    // Add item
+    rpc AddItem(AddItemRequest) returns (AddItemResponse);
+
+    // List all items
+    rpc ListItems(ListItemsRequest) returns (ListItemsResponse);
+}

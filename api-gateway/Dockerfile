@@ -1,19 +1,21 @@
+FROM golang:1.12-alpine as build-env
 
-FROM golang:1.12-alpine
-# install glide
-# RUN go get github.com/Masterminds/glide
-RUN apk update && apk add git
-RUN go get github.com/gin-gonic/gin
-# create a working directory
+ENV GO111MODULE=on
+
+RUN apk update && apk add bash ca-certificates git gcc g++ libc-dev
+
+RUN mkdir /api
+RUN mkdir -p /api/proto 
+
 WORKDIR /api
-# add glide.yaml and glide.lock
-# ADD glide.yaml glide.yaml
-# ADD glide.lock glide.lock
-# install packages
-# RUN glide install
-# add source code
-ADD src src
-# build main.go
-RUN go build src/api.go
-# run the binary
-CMD ["./api"]
+
+COPY ./proto/service.pb.go /api/proto
+COPY ./src/api.go .
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download
+
+RUN go build -o api-gateway .
+
+CMD ./api-gateway

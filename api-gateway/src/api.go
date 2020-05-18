@@ -1,28 +1,142 @@
 package main
 
-import "github.com/gin-gonic/gin"
-// import "net/http"
+import (
+	// "fmt"
+	"api-gateway/proto"
+	"net/http"
+
+	// "strconv"
+
+	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
+)
 
 type Logout struct {
-    Username string `json:"username" binding:"required"`
-    // Password string `form:"password" json:"password" binding:"required"`
+	Username string `json:"username" binding:"required"`
+	// Password string `form:"password" json:"password" binding:"required"`
 }
 
 type Items struct {
 	Item_Id uint `json:"item_id" binding:"required"`
 }
 
-
 func main() {
+	// gRPC connection
+	conn, err := grpc.Dial("localhost:4040", grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+
+	client := proto.NewUserServiceClient(conn)
 	router := gin.Default()
+
+	// TODO: when auth change this username to user's username
+	username := "zhiqisim"
+
+	// API-gateway Endpoints
 
 	// TODO: ADD Auth with redis cache
 	// group: user
+	/*
+		User Service
+	*/
 	user := router.Group("/user")
 	{
-		user.POST("/login", login)
-		user.POST("/logout", logout)
-		user.POST("/signup", signup)
+		user.POST("/login", func(c *gin.Context) {
+			/*
+				Description: Allow user to login and obtain auth session
+				Input: Form body - username, password
+				Output: JSON Object - AuthToken: Auth session token
+			*/
+
+			req := &proto.LoginRequest{User: &proto.User{
+				Username: c.PostForm("username"),
+				Password: c.PostForm("password"),
+			}}
+			if response, err := client.Login(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
+		user.POST("/logout", func(c *gin.Context) {
+			/*
+				Description: Allow user to logout
+				Input: JSON Object - username
+				Output: NIL
+				Header: Auth session token
+			*/
+
+			req := &proto.LogoutRequest{Username: "zhiqisim"}
+			if response, err := client.Logout(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
+		user.POST("/signup", func(c *gin.Context) {
+			/*
+				Description: Allow user to signup
+				Input: Form body - username, password
+				Output: NIL
+			*/
+
+			req := &proto.SignupRequest{User: &proto.User{
+				Username: c.PostForm("username"),
+				Password: c.PostForm("password"),
+			}}
+			if response, err := client.Signup(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
+		user.POST("/add-item", func(c *gin.Context) {
+			/*
+				Description: Add an item to user's tracking list
+				Input: Form body - item_id
+				Output: NIL
+				Header: Auth session token
+			*/
+
+			// response body
+			req := &proto.AddItemRequest{UserItem: &proto.UserItem{
+				Username: username,
+				ItemId:   c.PostForm("item_id"),
+			}}
+			if response, err := client.AddItem(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+
+		})
+		user.GET("/watchlist", func(c *gin.Context) {
+			/*
+				Description: Retrieve all items from database that user have added to tracker
+				Args: NIL
+				Output: JSON Object with list of all user tracked itmes
+				Header: Auth session token
+			*/
+
+			req := &proto.ListItemsRequest{Username: username}
+			if response, err := client.ListItems(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+					"item_id": response.ItemId,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
 	}
 
 	// group: items
@@ -30,71 +144,21 @@ func main() {
 	// // per group middleware! in this case we use the custom created
 	// // AuthRequired() middleware just in the "authorized" group.
 	// authorized.Use(AuthRequired())
-	items := router.Group("/items")
+	/*
+		Item Service
+	*/
+	items := router.Group("/item")
 	{
+
 		items.GET("/get-items", getItems)
-		items.POST("/add-item", addItem)
-		items.GET("/list-user-items", listUserItems)
 		items.GET("/price", price)
 	}
 
 	router.Run(":8080")
 }
 
-func login(c *gin.Context) {
-	/* 
-		Description: Allow user to login and obtain auth session
-		Input: Form body - username, password
-		Output: JSON Object - AuthToken: Auth session token
-	*/
-	// TODO: ADD in gRPC request to user service
-
-	username := c.PostForm("username")
-	password := c.PostForm("password")
-	// response body
-	c.JSON(200, gin.H{
-		"message": "Login success",
-		"username": username,
-		"password": password,
-	})
-}
-
-func signup(c *gin.Context) {
-	/* 
-		Description: Allow user to signup
-		Input: Form body - username, password
-		Output: NIL
-	*/
-	// TODO: ADD in gRPC request to user service
-	username := c.PostForm("username")
-	password := c.PostForm("password")
-	// response body
-	c.JSON(200, gin.H{
-		"message": "signup success",
-		"username": username,
-		"password": password,
-	})
-}
-
-func logout(c *gin.Context) {
-	/* 
-		Description: Allow user to logout
-		Input: JSON Object - username
-		Output: NIL
-		Header: Auth session token
-	*/
-	// TODO: ADD in gRPC request to user service
-	var json Logout
-	c.BindJSON(&json)
-	// response body
-	c.JSON(200, gin.H{
-		"message": "Logout success",
-		"username": json.Username,
-	})
-}
-
 func getItems(c *gin.Context) {
-	/* 
+	/*
 		Description: Retrieve all items from database for user to add to tracker
 		Args: NIL
 		Output: JSON Object with list of all itmes
@@ -107,46 +171,8 @@ func getItems(c *gin.Context) {
 	})
 }
 
-func addItem(c *gin.Context) {
-	/* 
-		Description: Add an item to user's tracking list
-		Input: JSON Object - item_id
-		Output: NIL
-		Header: Auth session token
-	*/
-	// TODO: ADD in gRPC request to items service
-	var json Items
-	c.BindJSON(&json)
-	// response body
-	if json.Item_Id == 0 {
-		c.JSON(404, gin.H{
-			"message": "Add items unsuccessful",
-		})
-	} else{
-		c.JSON(200, gin.H{
-			"message": "Add items success",
-			"item_id": json.Item_Id,
-		})
-	}
-
-}
-
-func listUserItems(c *gin.Context) {
-	/* 
-		Description: Retrieve all items from database that user have added to tracker
-		Args: NIL
-		Output: JSON Object with list of all user tracked itmes
-		Header: Auth session token
-	*/
-	// TODO: ADD in gRPC request to items service
-	// response body
-	c.JSON(200, gin.H{
-		"message": "All user items listed",
-	})
-}
-
 func price(c *gin.Context) {
-	/* 
+	/*
 		Description: Retrieve price changelog of item
 		Args: item_id
 		Output: JSON Object with list of all price history of item
