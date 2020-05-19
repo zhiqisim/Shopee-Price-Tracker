@@ -22,7 +22,7 @@ func InitializeMySQL() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s",
 		"root",
 		"root",
-		"localhost:32000",
+		"user-db:3306",
 		"userdb",
 		"parseTime=true")
 	dBConnection, err := sql.Open("mysql", dsn)

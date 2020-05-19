@@ -9,12 +9,14 @@ RUN mkdir -p /api/proto
 
 WORKDIR /api
 
-COPY ./proto/service.pb.go /api/proto
-COPY ./src/api.go .
 COPY go.mod .
 COPY go.sum .
 
 RUN go mod download
+
+COPY ./proto ./proto
+COPY ./src/api.go .
+
 
 RUN go build -o api-gateway .
 

@@ -11,23 +11,25 @@ import (
 	"google.golang.org/grpc"
 )
 
-type Logout struct {
-	Username string `json:"username" binding:"required"`
-	// Password string `form:"password" json:"password" binding:"required"`
-}
-
-type Items struct {
-	Item_Id uint `json:"item_id" binding:"required"`
-}
-
 func main() {
 	// gRPC connection
-	conn, err := grpc.Dial("localhost:4040", grpc.WithInsecure())
+	// Port 4040 for User Service (Go)
+	// Port 50051 for Item Service (Python)
+	userHost = "user-service"
+	conn, err := grpc.Dial(userHost+":4040", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
 
 	client := proto.NewUserServiceClient(conn)
+
+	itemHost = "item-service:4080"
+	itemConn, err := grpc.Dial(itemHost, grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+
+	itemClient := proto.NewItemServiceClient(itemConn)
 	router := gin.Default()
 
 	// TODO: when auth change this username to user's username
@@ -150,40 +152,43 @@ func main() {
 	items := router.Group("/item")
 	{
 
-		items.GET("/get-items", getItems)
-		items.GET("/price", price)
+		items.GET("/get-items", func(c *gin.Context) {
+			/*
+				Description: Retrieve all items from database for user to add to tracker
+				Args: NIL
+				Output: JSON Object with list of all itmes
+				Header: Auth session token
+			*/
+			req := &proto.ListAllItemsRequest{}
+			if response, err := itemClient.ListAllItems(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+					"items":   response.Items,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
+		items.GET("/price", func(c *gin.Context) {
+			/*
+				Description: Retrieve price changelog of item
+				Args: itemid
+				Output: JSON Object with list of all price history of item
+				Header: Auth session token
+			*/
+
+			item_id := c.Query("itemid")
+			req := &proto.ItemPriceRequest{ItemId: item_id}
+			if response, err := itemClient.ItemPrice(c, req); err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": response.Message,
+					"items":   response.ItemPrice,
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			}
+		})
 	}
 
 	router.Run(":8080")
-}
-
-func getItems(c *gin.Context) {
-	/*
-		Description: Retrieve all items from database for user to add to tracker
-		Args: NIL
-		Output: JSON Object with list of all itmes
-		Header: Auth session token
-	*/
-	// TODO: ADD in gRPC request to items service
-	// response body
-	c.JSON(200, gin.H{
-		"message": "All items listed",
-	})
-}
-
-func price(c *gin.Context) {
-	/*
-		Description: Retrieve price changelog of item
-		Args: item_id
-		Output: JSON Object with list of all price history of item
-		Header: Auth session token
-	*/
-	// TODO: ADD in gRPC request to items service
-
-	item_id := c.Query("itemid")
-	// response body
-	c.JSON(200, gin.H{
-		"message": "Price history shown",
-		"item_id": item_id,
-	})
 }

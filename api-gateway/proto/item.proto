@@ -1,0 +1,72 @@
+syntax = "proto3";
+package proto;
+
+// Users
+message Item {
+    // item_id of item
+    string item_id = 1;
+
+    // shop_id of item
+    string shop_id = 2;
+
+    // item_name of the item
+    string item_name = 3;
+
+    // item_price of the item
+    int64 item_price = 4;
+}
+
+// Users
+message ItemPrice {
+
+    // price_datetime of checked price for item
+    string price_datetime = 1;
+    
+    // price of item at datetime
+    int64 price = 2;
+
+    bool flash_sale = 3;
+}
+
+// Request Login credentials
+message ListAllItemsRequest{
+    
+}
+
+// Contains response for Login credentials
+message ListAllItemsResponse{
+    // message as response to list all items
+    // "success": successful
+    // "error": error
+    string message = 1;
+
+    // list of items
+    repeated Item items = 2;
+}
+
+// Request to create user
+message ItemPriceRequest{
+    // item_id of item
+    string item_id = 1;
+}
+
+// Response to create user
+message ItemPriceResponse{
+    // message as response to obtaining item price
+    // "success": successful
+    // "error": error
+    string message = 1;
+
+    // list of all prices of that item
+    repeated ItemPrice itemPrice = 2;
+}
+
+
+// Service to manage list of todo tasks
+service ItemService {
+    // ListAllItems
+    rpc ListAllItems(ListAllItemsRequest) returns (ListAllItemsResponse);
+
+    // ItemPrice
+    rpc ItemPrice(ItemPriceRequest) returns (ItemPriceResponse);
+}

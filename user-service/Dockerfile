@@ -9,12 +9,14 @@ RUN mkdir -p /user-service/proto
 
 WORKDIR /user-service
 
-COPY ./proto/service.pb.go /user-service/proto
-COPY ./server/service.go .
 COPY go.mod .
 COPY go.sum .
 
 RUN go mod download
+
+COPY ./proto/user.pb.go ./proto
+COPY ./server/service.go .
+
 
 RUN go build -o user-service .
 

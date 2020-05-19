@@ -1,10 +1,10 @@
-FROM python:2.7
+FROM python:2.7-alpine
 
 WORKDIR /price-service
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-COPY . .
+COPY . /price-service
 
-CMD [ "python", "./price_service.py" ]
+CMD [ "python", "./scheduler.py" ]
