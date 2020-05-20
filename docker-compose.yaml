@@ -1,48 +1,48 @@
 version: "3"
 services:
-  app:
-    build: ./app
-    ports:
-      - "80:80"
-    depends_on:
-      - api-gateway
-    # volumes:
-    #   - ./app:/app
+  # app:
+  #   build: ./app
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - api-gateway
+  # #   # volumes:
+  # #   #   - ./app:/app
 
-  api-gateway:
-    build: ./api-gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      - user-service
-      - item-service
-    # volumes:
-    #   - ./api-gateway:/api
+  # api-gateway:
+  #   build: ./api-gateway
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - user-service
+  #     - item-service
+  # #   # volumes:
+  # #   #   - ./api-gateway:/api
 
-  user-service:
-    build: ./user-service
-    ports:
-      - "4040:4040"
-    depends_on:
-      - user-db
-    # volumes:
-    #   - ./user-service:/user-service
+  # user-service:
+  #   build: ./user-service
+  #   ports:
+  #     - "4040:4040"
+  #   depends_on:
+  #     - user-db
+  # #   # volumes:
+  # #   #   - ./user-service:/user-service
 
-  item-service:
-    build: ./item-service
-    ports:
-      - "50051:4080"
-    depends_on:
-      - items-db
-  #   # volumes:
-  #   #   - ./item-service:/item-service
+  # item-service:
+  #   build: ./item-service
+  #   ports:
+  #     - "50051:50051"
+  #   depends_on:
+  #     - items-db
+  # # #   # volumes:
+  # # #   #   - ./item-service:/item-service
 
   price-service:
     build: ./price-service
     depends_on:
       - items-db
-  #   # volumes:
-  #   #   - ./price-service:/price-service
+    # volumes:
+      # - ./price-service:/price-service
 
 
   user-db:

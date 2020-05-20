@@ -5,7 +5,7 @@ import item_pb2 as item__pb2
 
 
 class ItemServiceStub(object):
-    """Service to manage list of todo tasks
+    """Service to manage list of itemservices
     """
 
     def __init__(self, channel):
@@ -27,7 +27,7 @@ class ItemServiceStub(object):
 
 
 class ItemServiceServicer(object):
-    """Service to manage list of todo tasks
+    """Service to manage list of itemservices
     """
 
     def ListAllItems(self, request, context):
@@ -65,7 +65,7 @@ def add_ItemServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class ItemService(object):
-    """Service to manage list of todo tasks
+    """Service to manage list of itemservices
     """
 
     @staticmethod

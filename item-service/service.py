@@ -25,7 +25,7 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
             for x in myresult:
                 item_id = str.encode(str(x[0]))
                 shop_id = str.encode(str(x[1]))
-                item_name = str.encode(str(x[2]))
+                item_name = x[2].decode('utf-8')
                 item_price = x[3]
                 item = item_pb2.Item(item_id = item_id, shop_id = shop_id, item_name = item_name, item_price = item_price)
                 arr.append(item)
@@ -50,6 +50,7 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
             adr = (request.item_id, )
             mycursor.execute(sql, adr)
             myresult = mycursor.fetchall()
+            logging.info("Compiling query!")
             for x in myresult:
                 item_date = str.encode(str(x[0]))
                 item_price = x[1]

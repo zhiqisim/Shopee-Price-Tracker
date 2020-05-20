@@ -15,7 +15,7 @@ func main() {
 	// gRPC connection
 	// Port 4040 for User Service (Go)
 	// Port 50051 for Item Service (Python)
-	userHost = "user-service"
+	userHost := "user-service"
 	conn, err := grpc.Dial(userHost+":4040", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
@@ -23,8 +23,8 @@ func main() {
 
 	client := proto.NewUserServiceClient(conn)
 
-	itemHost = "item-service:4080"
-	itemConn, err := grpc.Dial(itemHost, grpc.WithInsecure())
+	itemHost := "item-service"
+	itemConn, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}

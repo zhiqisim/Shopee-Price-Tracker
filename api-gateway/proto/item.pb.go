@@ -171,7 +171,7 @@ func (x *ItemPrice) GetFlashSale() bool {
 	return false
 }
 
-// Request Login credentials
+// Request to list all items
 type ListAllItemsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -210,7 +210,7 @@ func (*ListAllItemsRequest) Descriptor() ([]byte, []int) {
 	return file_item_proto_rawDescGZIP(), []int{2}
 }
 
-// Contains response for Login credentials
+// Contains response for listing all items
 type ListAllItemsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -270,7 +270,7 @@ func (x *ListAllItemsResponse) GetItems() []*Item {
 	return nil
 }
 
-// Request to create user
+// Request to view price of an item
 type ItemPriceRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -319,7 +319,7 @@ func (x *ItemPriceRequest) GetItemId() string {
 	return ""
 }
 
-// Response to create user
+// Response to view price of an item
 type ItemPriceResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

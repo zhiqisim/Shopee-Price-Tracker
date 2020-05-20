@@ -28,12 +28,22 @@ message ItemPrice {
     bool flash_sale = 3;
 }
 
-// Request Login credentials
+// // Request to add an item into item db
+// message addItemRequest{
+//     Item item = 1;
+// }
+
+// // Response to add an item into item db
+// message addItemResponse{
+//     string message = 1;
+// }
+
+// Request to list all items
 message ListAllItemsRequest{
     
 }
 
-// Contains response for Login credentials
+// Contains response for listing all items
 message ListAllItemsResponse{
     // message as response to list all items
     // "success": successful
@@ -44,13 +54,13 @@ message ListAllItemsResponse{
     repeated Item items = 2;
 }
 
-// Request to create user
+// Request to view price of an item
 message ItemPriceRequest{
     // item_id of item
     string item_id = 1;
 }
 
-// Response to create user
+// Response to view price of an item
 message ItemPriceResponse{
     // message as response to obtaining item price
     // "success": successful
@@ -62,7 +72,7 @@ message ItemPriceResponse{
 }
 
 
-// Service to manage list of todo tasks
+// Service to manage list of itemservices
 service ItemService {
     // ListAllItems
     rpc ListAllItems(ListAllItemsRequest) returns (ListAllItemsResponse);

@@ -94,7 +94,7 @@ message ListItemsResponse{
     repeated string list_item_id = 2;
 }
 
-// Service to manage list of todo tasks
+// Service to manage list of user services
 service UserService {
     // Login
     rpc Login(LoginRequest) returns (LoginResponse);

@@ -4,13 +4,19 @@ from datetime import datetime
 import json
 import requests
 import logging
+import re
+
+import pytz
 
 
 logging.basicConfig(level=logging.INFO)
 # Scheduled Job to run hourly
 def price_job():
+    singapore=pytz.timezone('Asia/Singapore')
+    logging.info("-----------Start time of job: " + singapore.localize(datetime.now()).strftime('%Y-%m-%d %H:%M:%S') + "-----------")
     get_flash_deal()
     update_items()
+    logging.info("-----------End time of job: " + singapore.localize(datetime.now()).strftime('%Y-%m-%d %H:%M:%S') + "-----------")
 
 # Shopee API 
 api = 'https://shopee.sg/api/v2'
@@ -27,17 +33,18 @@ def get_flash_deal():
     
     flash_items_data = req.json()['data']['items']
     my_data = []
-    # i = 0
     for item in flash_items_data:
         item_id = item['itemid']
         shop_id = item['shopid']
-        item_name = str(item['name'].strip().encode("utf-8"))
-        # item_name = "Test" + str(i)
+        # try del special chars to allow insertion
+        # reItem = re.sub(r'\s+', '-', item['name'].strip().encode("utf-8"))
+        # delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum())
+        # item_name = reItem.translate(None, delchars)
+        item_name = re.sub(r'([^\s\w]|_)+', '', item['name'].strip().encode("utf-8"))
         item_price = item['price']
         temp = [item_id, shop_id, item_name, item_price]
         logging.info(tuple(temp))
         my_data.append(tuple(temp))
-        # i+=1
     try:
         mydb = initSQL()
         mycursor = mydb.cursor(prepared=True)
@@ -78,7 +85,8 @@ def update_items():
                 item['itemid'], item['shopid'], item['price'], datetime.now()
             fetched_item_price = item['price']
             fetched_flash_sale = False if item['flash_sale'] == None else True
-            fetched_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            singapore=pytz.timezone('Asia/Singapore')
+            fetched_datetime = singapore.localize(datetime.now()).strftime('%Y-%m-%d %H:%M:%S')
             print(fetched_datetime, '---', fetched_item_price, '---', fetched_flash_sale)
             # update price on item table and item_price table if price changed
             # if price check if there is an entry already in the item_price table if not still insert
