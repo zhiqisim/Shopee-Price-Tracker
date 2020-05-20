@@ -1,15 +1,71 @@
 package main
 
 import (
-	// "fmt"
 	"api-gateway/proto"
+	"fmt"
 	"net/http"
+	"os"
 
 	// "strconv"
-
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 )
+
+var (
+	//RedisHost ...
+	RedisHost = os.Getenv("REDISHOST")
+	//RedisPort ...
+	RedisPort = os.Getenv("REDISPORT")
+)
+
+func authRequired() gin.HandlerFunc {
+	/*
+		Description: Authentication middleware
+		Check if user has the header that is stored in our session cache
+	*/
+	return func(c *gin.Context) {
+		// check if have the headers if no return error
+		if c.Request.Header["Auth-Token"] == nil {
+			c.JSON(http.StatusForbidden, gin.H{
+				"message": "error",
+				"error":   "auth",
+			})
+			c.Abort()
+		} else {
+			session := sessions.Default(c)
+			token := c.Request.Header["Auth-Token"][0]
+			sessionID := session.Get(token)
+			if sessionID == nil {
+				c.JSON(http.StatusForbidden, gin.H{
+					"message": "error",
+					"error":   "auth",
+				})
+				c.Abort()
+			}
+		}
+
+	}
+}
+
+func getUsername(c *gin.Context) string {
+	/*
+		Description: Helper function to get username from session
+	*/
+	// check if have the headers if no return error
+	if c.Request.Header["Auth-Token"] == nil {
+		return "error"
+	}
+	session := sessions.Default(c)
+	session.Options(sessions.Options{MaxAge: 60})
+	token := c.Request.Header["Auth-Token"][0]
+	interfaceUser := session.Get(token)
+	username := fmt.Sprintf("%v", interfaceUser)
+	return username
+
+}
 
 func main() {
 	// gRPC connection
@@ -32,37 +88,78 @@ func main() {
 	itemClient := proto.NewItemServiceClient(itemConn)
 	router := gin.Default()
 
-	// TODO: when auth change this username to user's username
-	username := "zhiqisim"
+	// connect to REDIS session store
+	store, _ := redis.NewStore(10, "tcp", RedisHost+":"+RedisPort, "", []byte("secret"))
+	router.Use(sessions.Sessions("mysession", store))
 
-	// API-gateway Endpoints
+	// max age of each session in seconds
+	sessionTimeout := 60 * 60 // 1 hour
 
-	// TODO: ADD Auth with redis cache
-	// group: user
 	/*
-		User Service
+		Group: public (no auth required)
+		API-gateway Endpoints
 	*/
-	user := router.Group("/user")
-	{
-		user.POST("/login", func(c *gin.Context) {
-			/*
-				Description: Allow user to login and obtain auth session
-				Input: Form body - username, password
-				Output: JSON Object - AuthToken: Auth session token
-			*/
 
-			req := &proto.LoginRequest{User: &proto.User{
-				Username: c.PostForm("username"),
-				Password: c.PostForm("password"),
-			}}
-			if response, err := client.Login(c, req); err == nil {
+	router.POST("/login", func(c *gin.Context) {
+		/*
+			Description: Allow user to login and obtain auth session
+			Input: Form body - username, password
+			Output: JSON Object - AuthToken: Auth session token
+		*/
+		sessionToken := uuid.New().String()
+		username := c.PostForm("username")
+		password := c.PostForm("password")
+		req := &proto.LoginRequest{User: &proto.User{
+			Username: username,
+			Password: password,
+		}}
+		if response, err := client.Login(c, req); err == nil {
+			session := sessions.Default(c)
+			session.Options(sessions.Options{MaxAge: sessionTimeout})
+			session.Set(sessionToken, username)
+			session.Save()
+			if response.Message == "error" {
 				c.JSON(http.StatusOK, gin.H{
 					"message": response.Message,
 				})
 			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				c.JSON(http.StatusOK, gin.H{
+					"message":    response.Message,
+					"Auth-Token": sessionToken,
+				})
 			}
-		})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+	})
+
+	router.POST("/signup", func(c *gin.Context) {
+		/*
+			Description: Allow user to signup
+			Input: Form body - username, password
+			Output: NIL
+		*/
+		req := &proto.SignupRequest{User: &proto.User{
+			Username: c.PostForm("username"),
+			Password: c.PostForm("password"),
+		}}
+		if response, err := client.Signup(c, req); err == nil {
+			c.JSON(http.StatusOK, gin.H{
+				"message": response.Message,
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+	})
+
+	/*
+		Group: user (Auth required)
+		Service: User
+	*/
+	user := router.Group("/user")
+	user.Use(authRequired())
+	{
+
 		user.POST("/logout", func(c *gin.Context) {
 			/*
 				Description: Allow user to logout
@@ -71,34 +168,33 @@ func main() {
 				Header: Auth session token
 			*/
 
-			req := &proto.LogoutRequest{Username: "zhiqisim"}
-			if response, err := client.Logout(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{
-					"message": response.Message,
+			// check if have the headers
+			if c.Request.Header["Auth-Token"] == nil {
+				c.JSON(http.StatusForbidden, gin.H{
+					"message": "error",
+					"error":   "auth",
 				})
 			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				// delete session token for user
+				session := sessions.Default(c)
+				session.Options(sessions.Options{MaxAge: 60})
+				token := c.Request.Header["Auth-Token"][0]
+				session.Delete(token)
+				session.Save()
+				// obtain username from session to track user
+				username := getUsername(c)
+				req := &proto.LogoutRequest{Username: username}
+				if response, err := client.Logout(c, req); err == nil {
+					c.JSON(http.StatusOK, gin.H{
+						"message": response.Message,
+					})
+				} else {
+					c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				}
 			}
-		})
-		user.POST("/signup", func(c *gin.Context) {
-			/*
-				Description: Allow user to signup
-				Input: Form body - username, password
-				Output: NIL
-			*/
 
-			req := &proto.SignupRequest{User: &proto.User{
-				Username: c.PostForm("username"),
-				Password: c.PostForm("password"),
-			}}
-			if response, err := client.Signup(c, req); err == nil {
-				c.JSON(http.StatusOK, gin.H{
-					"message": response.Message,
-				})
-			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			}
 		})
+
 		user.POST("/add-item", func(c *gin.Context) {
 			/*
 				Description: Add an item to user's tracking list
@@ -107,7 +203,8 @@ func main() {
 				Header: Auth session token
 			*/
 
-			// response body
+			// obtain username from session to track user
+			username := getUsername(c)
 			req := &proto.AddItemRequest{UserItem: &proto.UserItem{
 				Username: username,
 				ItemId:   c.PostForm("item_id"),
@@ -121,6 +218,7 @@ func main() {
 			}
 
 		})
+
 		user.GET("/watchlist", func(c *gin.Context) {
 			/*
 				Description: Retrieve all items from database that user have added to tracker
@@ -128,7 +226,8 @@ func main() {
 				Output: JSON Object with list of all user tracked itmes
 				Header: Auth session token
 			*/
-
+			// obtain username from session to track user
+			username := getUsername(c)
 			req := &proto.ListItemsRequest{Username: username}
 			if response, err := client.ListItems(c, req); err == nil {
 				c.JSON(http.StatusOK, gin.H{
@@ -141,12 +240,8 @@ func main() {
 		})
 	}
 
-	// group: items
-	// authorized := r.Group("/")
-	// // per group middleware! in this case we use the custom created
-	// // AuthRequired() middleware just in the "authorized" group.
-	// authorized.Use(AuthRequired())
 	/*
+		Group: items (no auth required)
 		Item Service
 	*/
 	items := router.Group("/item")
@@ -177,8 +272,8 @@ func main() {
 				Header: Auth session token
 			*/
 
-			item_id := c.Query("itemid")
-			req := &proto.ItemPriceRequest{ItemId: item_id}
+			itemID := c.Query("itemid")
+			req := &proto.ItemPriceRequest{ItemId: itemID}
 			if response, err := itemClient.ItemPrice(c, req); err == nil {
 				c.JSON(http.StatusOK, gin.H{
 					"message": response.Message,

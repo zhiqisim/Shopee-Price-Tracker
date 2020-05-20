@@ -37,13 +37,12 @@ def get_flash_deal():
         item_id = item['itemid']
         shop_id = item['shopid']
         # try del special chars to allow insertion
-        # reItem = re.sub(r'\s+', '-', item['name'].strip().encode("utf-8"))
-        # delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum())
-        # item_name = reItem.translate(None, delchars)
         item_name = re.sub(r'([^\s\w]|_)+', '', item['name'].strip().encode("utf-8"))
         item_price = item['price']
         temp = [item_id, shop_id, item_name, item_price]
-        logging.info(tuple(temp))
+
+        # logging.debug(tuple(temp))
+        
         my_data.append(tuple(temp))
     try:
         mydb = initSQL()
@@ -87,7 +86,9 @@ def update_items():
             fetched_flash_sale = False if item['flash_sale'] == None else True
             singapore=pytz.timezone('Asia/Singapore')
             fetched_datetime = singapore.localize(datetime.now()).strftime('%Y-%m-%d %H:%M:%S')
-            print(fetched_datetime, '---', fetched_item_price, '---', fetched_flash_sale)
+
+            # logging.debug(fetched_datetime, '---', fetched_item_price, '---', fetched_flash_sale)
+
             # update price on item table and item_price table if price changed
             # if price check if there is an entry already in the item_price table if not still insert
             if price != fetched_item_price:
@@ -106,7 +107,9 @@ def update_items():
                 adr = (item_id, )
                 mycursor2.execute(sql, adr)
                 records = mycursor2.fetchall()
-                print("Row count = ", mycursor2.rowcount)
+
+                # logging.debug("Row count = ", mycursor2.rowcount)
+
                 if mycursor2.rowcount == 0:
                     sql = 'INSERT INTO item_price(item_id, price_datetime, price, flash_sale) VALUES(%s, %s, %s, %s)'
                     adr = (item_id, fetched_datetime, fetched_item_price, fetched_flash_sale)

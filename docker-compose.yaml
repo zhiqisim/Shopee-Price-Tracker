@@ -1,42 +1,59 @@
 version: "3"
 services:
-  # app:
-  #   build: ./app
-  #   ports:
-  #     - "80:80"
-  #   depends_on:
-  #     - api-gateway
+  # nginx gateway for frontend & routing
+  app:
+    build: ./app
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+  #   # volumes:
+  #   #   - ./app:/app
+
+  # api-gateway with GO
+  api-gateway:
+    build: ./api-gateway
+    environment:
+      - REDISPORT=6379
+      - REDISHOST=redis-user-sessions
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - item-service
+      - redis-user-sessions
+  #   # volumes:
+  #   #   - ./api-gateway:/api
+
+  # redis cache for user session management
+  redis-user-sessions:
+    image: redis:latest
+    volumes:
+        - ./api-gateway/data/redis:/data
+    ports:
+        - 6379:6379
+
+  # user service with GO
+  user-service:
+    build: ./user-service
+    ports:
+      - "4040:4040"
+    depends_on:
+      - user-db
+  #   # volumes:
+  #   #   - ./user-service:/user-service
+
+  # item service with python
+  item-service:
+    build: ./item-service
+    ports:
+      - "50051:50051"
+    depends_on:
+      - items-db
   # #   # volumes:
-  # #   #   - ./app:/app
+  # #   #   - ./item-service:/item-service
 
-  # api-gateway:
-  #   build: ./api-gateway
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - user-service
-  #     - item-service
-  # #   # volumes:
-  # #   #   - ./api-gateway:/api
-
-  # user-service:
-  #   build: ./user-service
-  #   ports:
-  #     - "4040:4040"
-  #   depends_on:
-  #     - user-db
-  # #   # volumes:
-  # #   #   - ./user-service:/user-service
-
-  # item-service:
-  #   build: ./item-service
-  #   ports:
-  #     - "50051:50051"
-  #   depends_on:
-  #     - items-db
-  # # #   # volumes:
-  # # #   #   - ./item-service:/item-service
-
+  # price service with python
   price-service:
     build: ./price-service
     depends_on:
@@ -44,7 +61,8 @@ services:
     # volumes:
       # - ./price-service:/price-service
 
-
+  
+  # user db with mySQL
   user-db:
     image: mysql:5.7
     ports:
@@ -55,6 +73,7 @@ services:
       - ./db/user-db/storage:/var/lib/mysql:rw
       - ./db/user-db:/docker-entrypoint-initdb.d/:ro
 
+  # item db with mySQL
   items-db:
     image: mysql:5.7
     ports:
