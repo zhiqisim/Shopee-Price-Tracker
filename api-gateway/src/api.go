@@ -7,6 +7,7 @@ import (
 	"os"
 
 	// "strconv"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
@@ -24,11 +25,12 @@ var (
 func authRequired() gin.HandlerFunc {
 	/*
 		Description: Authentication middleware
-		Check if user has the header that is stored in our session cache
+		Check if user has the cookie that is stored in our session cache
 	*/
 	return func(c *gin.Context) {
-		// check if have the headers if no return error
-		if c.Request.Header["Auth-Token"] == nil {
+		// check if have the cookie if no return error
+		token, err := c.Cookie("auth-token")
+		if err == http.ErrNoCookie {
 			c.JSON(http.StatusForbidden, gin.H{
 				"message": "error",
 				"error":   "auth",
@@ -36,7 +38,6 @@ func authRequired() gin.HandlerFunc {
 			c.Abort()
 		} else {
 			session := sessions.Default(c)
-			token := c.Request.Header["Auth-Token"][0]
 			sessionID := session.Get(token)
 			if sessionID == nil {
 				c.JSON(http.StatusForbidden, gin.H{
@@ -54,13 +55,18 @@ func getUsername(c *gin.Context) string {
 	/*
 		Description: Helper function to get username from session
 	*/
-	// check if have the headers if no return error
-	if c.Request.Header["Auth-Token"] == nil {
+	// check if have the cookie if no return error
+	token, err := c.Cookie("auth-token")
+	if err == http.ErrNoCookie {
+		c.JSON(http.StatusForbidden, gin.H{
+			"message": "error",
+			"error":   "auth",
+		})
+		c.Abort()
 		return "error"
 	}
 	session := sessions.Default(c)
 	session.Options(sessions.Options{MaxAge: 60})
-	token := c.Request.Header["Auth-Token"][0]
 	interfaceUser := session.Get(token)
 	username := fmt.Sprintf("%v", interfaceUser)
 	return username
@@ -87,6 +93,14 @@ func main() {
 
 	itemClient := proto.NewItemServiceClient(itemConn)
 	router := gin.Default()
+	// - No origin allowed by default
+	// - GET,POST, PUT, HEAD methods
+	// - Credentials share disabled
+	// - Preflight requests cached for 12 hours
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowCredentials = true
+	router.Use(cors.New(config))
 
 	// connect to REDIS session store
 	store, _ := redis.NewStore(10, "tcp", RedisHost+":"+RedisPort, "", []byte("secret"))
@@ -123,9 +137,10 @@ func main() {
 					"message": response.Message,
 				})
 			} else {
+				// set cookie for client
+				c.SetCookie("auth-token", sessionToken, sessionTimeout, "/", "localhost", false, true)
 				c.JSON(http.StatusOK, gin.H{
-					"message":    response.Message,
-					"Auth-Token": sessionToken,
+					"message": response.Message,
 				})
 			}
 		} else {
@@ -168,8 +183,9 @@ func main() {
 				Header: Auth session token
 			*/
 
-			// check if have the headers
-			if c.Request.Header["Auth-Token"] == nil {
+			// check if have the cookie
+			token, err := c.Cookie("auth-token")
+			if err == http.ErrNoCookie {
 				c.JSON(http.StatusForbidden, gin.H{
 					"message": "error",
 					"error":   "auth",
@@ -178,13 +194,14 @@ func main() {
 				// delete session token for user
 				session := sessions.Default(c)
 				session.Options(sessions.Options{MaxAge: 60})
-				token := c.Request.Header["Auth-Token"][0]
 				session.Delete(token)
 				session.Save()
 				// obtain username from session to track user
 				username := getUsername(c)
 				req := &proto.LogoutRequest{Username: username}
 				if response, err := client.Logout(c, req); err == nil {
+					// delete cookie from client
+					c.SetCookie("auth-token", "placeholder", -1, "/", "localhost", false, true)
 					c.JSON(http.StatusOK, gin.H{
 						"message": response.Message,
 					})
