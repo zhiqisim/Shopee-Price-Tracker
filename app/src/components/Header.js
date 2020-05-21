@@ -4,14 +4,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button, makeStyles } from "@material-ui/core";
 import { Link } from 'react-router-dom';
-
-// import { AuthContext } from "../helpers/Auth";
+import API from "../utils/API";
+import { AuthContext } from "../utils/Auth";
 
 
 const useStyles = makeStyles(theme => ({
     appBar: {
         borderBottom: `1px solid ${theme.palette.divider}`,
-        background : '#FF4500',
+        background: '#FF4500',
     },
     toolbar: {
         flexWrap: 'wrap',
@@ -33,23 +33,38 @@ const useStyles = makeStyles(theme => ({
 
 function HeaderButtons() {
     const classes = useStyles();
-    // const { currentUser } = useContext(AuthContext);
-    // if (currentUser) {
-    //     return (
-    //         <React.Fragment>
-    //             <Link to={'/watchlist'} className={classes.link}>
-    //                 <Button size="medium">
-    //                     <b>POST</b>
-    //                 </Button>
-    //             </Link>
-    //             <Link to={'/'} className={classes.link}>
-    //                 <Button onClick={() => firebase.auth().signOut()} color="primary" variant="outlined" className={classes.link}>
-    //                     Logout
-    //                 </Button>
-    //             </Link>
-    //         </React.Fragment>
-    //     )
-    // } else {
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
+    const logout = () => {
+        var bodyFormData = new FormData();
+        API.post('/user/logout', bodyFormData, { withCredentials: true })
+            .then(response => {
+                console.log(response.data);
+                if (response.data.message === "success") {
+                    console.log("Logged out");
+                    setCurrentUser(null);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    if (currentUser) {
+        return (
+            <React.Fragment>
+                <Link to={'/watchlist'} className={classes.link}>
+                    <Button size="medium" className={classes.link}>
+                        <b>Watch List</b>
+                    </Button>
+                </Link>
+                <Link to={'/user/logout'} className={classes.link}>
+                    <Button onClick={logout} variant="outlined" className={classes.link}>
+                        Logout
+                    </Button>
+                </Link>
+            </React.Fragment>
+        )
+    } else {
         return (
             <Link to={'/login'} className={classes.link}>
                 <Button variant="outlined" className={classes.link}>
@@ -57,7 +72,7 @@ function HeaderButtons() {
                 </Button>
             </Link>
         )
-    // }
+    }
 }
 
 export default function Header() {
@@ -70,7 +85,7 @@ export default function Header() {
                         <b>Shopee Price Tracker</b>
                     </Link>
                 </Typography>
-                <HeaderButtons/>
+                <HeaderButtons />
             </Toolbar>
         </AppBar>
     )

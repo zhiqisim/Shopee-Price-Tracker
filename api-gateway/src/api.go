@@ -31,7 +31,7 @@ func authRequired() gin.HandlerFunc {
 		// check if have the cookie if no return error
 		token, err := c.Cookie("auth-token")
 		if err == http.ErrNoCookie {
-			c.JSON(http.StatusForbidden, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"message": "error",
 				"error":   "auth",
 			})
@@ -40,7 +40,7 @@ func authRequired() gin.HandlerFunc {
 			session := sessions.Default(c)
 			sessionID := session.Get(token)
 			if sessionID == nil {
-				c.JSON(http.StatusForbidden, gin.H{
+				c.JSON(http.StatusOK, gin.H{
 					"message": "error",
 					"error":   "auth",
 				})
@@ -58,7 +58,8 @@ func getUsername(c *gin.Context) string {
 	// check if have the cookie if no return error
 	token, err := c.Cookie("auth-token")
 	if err == http.ErrNoCookie {
-		c.JSON(http.StatusForbidden, gin.H{
+		// http.StatusForbidden
+		c.JSON(http.StatusOK, gin.H{
 			"message": "error",
 			"error":   "auth",
 		})
@@ -175,12 +176,22 @@ func main() {
 	user.Use(authRequired())
 	{
 
+		user.GET("/is-auth", func(c *gin.Context) {
+			/*
+				Description: Check if user is auth-ed to server
+				Args: NIL
+				Output: message that user is auth-ed
+			*/
+			c.JSON(http.StatusOK, gin.H{
+				"message": "success",
+			})
+		})
+
 		user.POST("/logout", func(c *gin.Context) {
 			/*
 				Description: Allow user to logout
-				Input: JSON Object - username
+				Input: NIL
 				Output: NIL
-				Header: Auth session token
 			*/
 
 			// check if have the cookie
@@ -217,14 +228,15 @@ func main() {
 				Description: Add an item to user's tracking list
 				Input: Form body - item_id
 				Output: NIL
-				Header: Auth session token
 			*/
 
 			// obtain username from session to track user
 			username := getUsername(c)
+
 			req := &proto.AddItemRequest{UserItem: &proto.UserItem{
 				Username: username,
 				ItemId:   c.PostForm("item_id"),
+				ItemName: c.PostForm("item_name"),
 			}}
 			if response, err := client.AddItem(c, req); err == nil {
 				c.JSON(http.StatusOK, gin.H{
@@ -241,15 +253,14 @@ func main() {
 				Description: Retrieve all items from database that user have added to tracker
 				Args: NIL
 				Output: JSON Object with list of all user tracked itmes
-				Header: Auth session token
 			*/
 			// obtain username from session to track user
 			username := getUsername(c)
 			req := &proto.ListItemsRequest{Username: username}
 			if response, err := client.ListItems(c, req); err == nil {
 				c.JSON(http.StatusOK, gin.H{
-					"message": response.Message,
-					"item_id": response.ItemId,
+					"message":      response.Message,
+					"item_details": response.Item,
 				})
 			} else {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -269,7 +280,6 @@ func main() {
 				Description: Retrieve all items from database for user to add to tracker
 				Args: NIL
 				Output: JSON Object with list of all itmes
-				Header: Auth session token
 			*/
 			req := &proto.ListAllItemsRequest{}
 			if response, err := itemClient.ListAllItems(c, req); err == nil {
@@ -286,7 +296,6 @@ func main() {
 				Description: Retrieve price changelog of item
 				Args: itemid
 				Output: JSON Object with list of all price history of item
-				Header: Auth session token
 			*/
 
 			itemID := c.Query("itemid")

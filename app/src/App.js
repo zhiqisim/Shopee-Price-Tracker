@@ -1,10 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
-import ItemList from './containers/ItemList';
-import {AuthProvider} from './helpers/Auth';
+
+// Utils
+import {AuthProvider} from './utils/Auth';
+import PrivateRoute from './utils/PrivateRoute';
+
+// Containers
 import Login from './containers/Login';
-import PrivateRoute from './helpers/PrivateRoute';
+import Signup from './containers/Signup';
+import ItemList from './containers/ItemList';
+import WatchList from './containers/WatchList';
+import Price from './containers/Price';
+
 
 
 const theme = createMuiTheme({
@@ -34,14 +42,16 @@ const theme = createMuiTheme({
 function App() {
   return (
 
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
       <AuthProvider>
         <BrowserRouter>
           <div>
             <Switch>
-              {/* <PrivateRoute path="/watchlist" component={Post} /> */}
+              <PrivateRoute path="/watchlist" component={WatchList} />
               <Route path="/" exact component={ItemList} />
               <Route path="/login" exact component={Login} />
+              <Route path="/signup" exact component={Signup} />
+              <Route path="/price/:id" exact component={Price} />
               <Redirect from="*" to="/" />
             </Switch>
           </div>

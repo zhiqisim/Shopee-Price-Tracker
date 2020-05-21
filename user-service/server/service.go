@@ -146,7 +146,7 @@ func (s *server) Signup(ctx context.Context, req *proto.SignupRequest) (*proto.S
 
 // Add item for user
 func (s *server) AddItem(ctx context.Context, req *proto.AddItemRequest) (*proto.AddItemResponse, error) {
-	sqlQuery := "INSERT user_item SET username = ?, item_id = ?"
+	sqlQuery := "INSERT user_item SET username = ?, item_id = ?, item_name = ?"
 	stmt, err := db.Prepare(sqlQuery)
 	defer stmt.Close()
 	if err != nil {
@@ -157,7 +157,8 @@ func (s *server) AddItem(ctx context.Context, req *proto.AddItemRequest) (*proto
 	}
 	username := req.UserItem.Username
 	item_id := req.UserItem.ItemId
-	res, err := stmt.Exec(username, item_id)
+	item_name := req.UserItem.ItemName
+	res, err := stmt.Exec(username, item_id, item_name)
 	if err != nil {
 		fmt.Println(err)
 		return &proto.AddItemResponse{
@@ -179,7 +180,7 @@ func (s *server) AddItem(ctx context.Context, req *proto.AddItemRequest) (*proto
 
 // Read all items from user
 func (s *server) ListItems(ctx context.Context, req *proto.ListItemsRequest) (*proto.ListItemsResponse, error) {
-	sqlQuery := "SELECT `item_id` FROM user_item WHERE `username`=?"
+	sqlQuery := "SELECT `item_id`, `item_name` FROM user_item WHERE `username`=?"
 	stmt, err := db.Prepare(sqlQuery)
 	defer stmt.Close()
 	if err != nil {
@@ -188,7 +189,7 @@ func (s *server) ListItems(ctx context.Context, req *proto.ListItemsRequest) (*p
 			Message: "error",
 		}, nil
 	}
-	list := []string{}
+	list := []*proto.ItemDetails{}
 	res, err := stmt.Query(req.Username)
 	defer res.Close()
 	if err != nil {
@@ -198,13 +199,13 @@ func (s *server) ListItems(ctx context.Context, req *proto.ListItemsRequest) (*p
 		}, nil
 	}
 	for res.Next() {
-		var td string
-		res.Scan(&td)
+		td := new(proto.ItemDetails)
+		res.Scan(&td.ItemId, &td.ItemName)
 		list = append(list, td)
 	}
 	fmt.Println("ListItems success!")
 	return &proto.ListItemsResponse{
 		Message: "success",
-		ItemId:  list,
+		Item:    list,
 	}, nil
 }

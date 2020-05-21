@@ -25,10 +25,12 @@ def get_flash_deal():
     """
         Obtain all items in flash deal and store them in DB if not exist
     """
-    url = api + '/flash_sale/get_items'
-    req = requests.get(url)
+    try:
+        url = api + '/flash_sale/get_items'
+        req = requests.get(url)
+    except requests.exceptions.HTTPError as err:
+        logging.error("Failed to fetch Shopee API :{}".format(err))
     
-
     sql = 'INSERT INTO item(item_id, shop_id, item_name, price) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE item_id = item_id' 
     
     flash_items_data = req.json()['data']['items']

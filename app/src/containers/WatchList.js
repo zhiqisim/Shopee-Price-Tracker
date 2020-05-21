@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
@@ -9,11 +9,10 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 import API from "../utils/API";
 
 import Header from '../components/Header';
-import { AuthContext } from "../utils/Auth.js";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,35 +40,39 @@ const useStyles = makeStyles((theme) => ({
   },
   cardButton: {
     horizontalAlign: "right",
-  }
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+    textDecoration: "none"
+  },
 }));
 
-export default function ItemsList() {
+export default function WatchList() {
   const classes = useStyles();
 
   // Set default as null so we
   // know if it's still loading
-  const [itemsInfo, setItems] = useState(null);
-
-  const { currentUser } = useContext(AuthContext);
+  const [watchListInfo, setWatchList] = useState(null);
 
   // Initialize with listening to our
   // API. The second argument
   // with the empty array makes sure the
   // function only executes once
   useEffect(() => {
-    listenForItemInfo();
+    listenForWatchListInfo();
   }, []);
 
-  const listenForItemInfo = () => {
-    API.get('/item/get-items')
+  const listenForWatchListInfo = () => {
+    API.get('/user/watchlist', { withCredentials: true })
       .then(response => {
         console.log(response.data);
-        if (response.data.message === "success"){
+        if (response.data.message === "success") {
           const allItems = [];
-          const jsonData = response.data.items;
-          jsonData.forEach((doc) => allItems.push(doc));
-          setItems(allItems)
+          const jsonData = response.data.item_details;
+          if (jsonData != null){
+            jsonData.forEach((doc) => allItems.push(doc));
+          }
+          setWatchList(allItems)
         }
       })
       .catch(error => {
@@ -77,27 +80,7 @@ export default function ItemsList() {
       });
   }
 
-  const addItem = (item_id, item_name) => {
-    var bodyFormData = new FormData();
-    bodyFormData.append("item_id", item_id);
-    bodyFormData.append("item_name", item_name);
-    API.post('/user/add-item', bodyFormData, { withCredentials: true })
-        .then(response => {
-            console.log(response.data);
-            if (response.data.message === "success"){
-              alert("Added item to your watchlist!")
-            } else if (currentUser){
-              alert("The item is already in your watchlist")
-            } else{
-              alert("Please login/signup!")
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
-
-  if (!itemsInfo) {
+  if (!watchListInfo) {
     return (
       <div>
         Please wait...
@@ -112,8 +95,8 @@ export default function ItemsList() {
       <Header classes={classes} />
       <List className={classes.root}>
         <Container className={classes.listContainer} maxWidth="xs">
-          {itemsInfo.map(({ item_name, item_price, item_id, shop_id }, index) => (
-            <React.Fragment key= {index}>
+          {watchListInfo.map(({ item_name, item_id }, index) => (
+            <React.Fragment key={index}>
               <Card className={classes.card}>
                 <CardContent className={classes.cardContent}>
                   <ListItem alignItems="flex-start">
@@ -129,27 +112,15 @@ export default function ItemsList() {
                         </Typography>
 
                       </React.Fragment>}
-                      secondary={
-                        <React.Fragment>
-                          <br />
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            Current Price: ${item_price / 100000.0}
-                          </Typography>
-
-                        </React.Fragment>
-                      }
                     />
                   </ListItem>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" color="primary" variant="outlined" className={classes.cardButton} onClick= {addItem.bind(this,item_id, item_name)}>
-                    Add to Watchlist
+                  <Link to={'/price/' + item_id} className={classes.link}>
+                    <Button size="small" color="primary" variant="outlined" className={classes.cardButton}>
+                      View Price Changelog
                   </Button>
+                  </Link>
                 </CardActions>
               </Card>
 

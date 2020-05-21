@@ -18,6 +18,17 @@ message UserItem {
 
     // item_id of user's item list
     string item_id = 2;
+
+    // item_name of user's item list
+    string item_name = 3;
+}
+
+message ItemDetails {
+    // item_id of user's item list
+    string item_id = 1;
+
+    // item_name of user's item list
+    string item_name = 2;
 }
 
 // Request Login credentials
@@ -91,7 +102,7 @@ message ListItemsResponse{
     // "error": error
     string message = 1;
 
-    repeated string list_item_id = 2;
+    repeated ItemDetails item = 2;
 }
 
 // Service to manage list of user services
