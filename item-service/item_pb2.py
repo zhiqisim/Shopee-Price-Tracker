@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='proto',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\nitem.proto\x12\x05proto\"O\n\x04Item\x12\x0f\n\x07item_id\x18\x01 \x01(\t\x12\x0f\n\x07shop_id\x18\x02 \x01(\t\x12\x11\n\titem_name\x18\x03 \x01(\t\x12\x12\n\nitem_price\x18\x04 \x01(\x03\"F\n\tItemPrice\x12\x16\n\x0eprice_datetime\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x03\x12\x12\n\nflash_sale\x18\x03 \x01(\x08\"\x15\n\x13ListAllItemsRequest\"C\n\x14ListAllItemsResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x1a\n\x05items\x18\x02 \x03(\x0b\x32\x0b.proto.Item\"#\n\x10ItemPriceRequest\x12\x0f\n\x07item_id\x18\x01 \x01(\t\"I\n\x11ItemPriceResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12#\n\titemPrice\x18\x02 \x03(\x0b\x32\x10.proto.ItemPrice2\x96\x01\n\x0bItemService\x12G\n\x0cListAllItems\x12\x1a.proto.ListAllItemsRequest\x1a\x1b.proto.ListAllItemsResponse\x12>\n\tItemPrice\x12\x17.proto.ItemPriceRequest\x1a\x18.proto.ItemPriceResponseb\x06proto3'
+  serialized_pb=b'\n\nitem.proto\x12\x05proto\"O\n\x04Item\x12\x0f\n\x07item_id\x18\x01 \x01(\t\x12\x0f\n\x07shop_id\x18\x02 \x01(\t\x12\x11\n\titem_name\x18\x03 \x01(\t\x12\x12\n\nitem_price\x18\x04 \x01(\x03\"F\n\tItemPrice\x12\x16\n\x0eprice_datetime\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x03\x12\x12\n\nflash_sale\x18\x03 \x01(\x08\"G\n\x10ItemWithoutPrice\x12\x0f\n\x07item_id\x18\x01 \x01(\t\x12\x0f\n\x07shop_id\x18\x02 \x01(\t\x12\x11\n\titem_name\x18\x03 \x01(\t\":\n\x11\x41\x64\x64NewItemRequest\x12%\n\x04item\x18\x01 \x01(\x0b\x32\x17.proto.ItemWithoutPrice\"%\n\x12\x41\x64\x64NewItemResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"4\n\x13ListAllItemsRequest\x12\r\n\x05limit\x18\x01 \x01(\x03\x12\x0e\n\x06offset\x18\x02 \x01(\x03\"C\n\x14ListAllItemsResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x1a\n\x05items\x18\x02 \x03(\x0b\x32\x0b.proto.Item\"#\n\x10ItemPriceRequest\x12\x0f\n\x07item_id\x18\x01 \x01(\t\"I\n\x11ItemPriceResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12#\n\titemPrice\x18\x02 \x03(\x0b\x32\x10.proto.ItemPrice2\xd9\x01\n\x0bItemService\x12\x41\n\nAddNewItem\x12\x18.proto.AddNewItemRequest\x1a\x19.proto.AddNewItemResponse\x12G\n\x0cListAllItems\x12\x1a.proto.ListAllItemsRequest\x1a\x1b.proto.ListAllItemsResponse\x12>\n\tItemPrice\x12\x17.proto.ItemPriceRequest\x1a\x18.proto.ItemPriceResponseb\x06proto3'
 )
 
 
@@ -121,13 +121,34 @@ _ITEMPRICE = _descriptor.Descriptor(
 )
 
 
-_LISTALLITEMSREQUEST = _descriptor.Descriptor(
-  name='ListAllItemsRequest',
-  full_name='proto.ListAllItemsRequest',
+_ITEMWITHOUTPRICE = _descriptor.Descriptor(
+  name='ItemWithoutPrice',
+  full_name='proto.ItemWithoutPrice',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='item_id', full_name='proto.ItemWithoutPrice.item_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='shop_id', full_name='proto.ItemWithoutPrice.shop_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='item_name', full_name='proto.ItemWithoutPrice.item_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -141,7 +162,107 @@ _LISTALLITEMSREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=174,
-  serialized_end=195,
+  serialized_end=245,
+)
+
+
+_ADDNEWITEMREQUEST = _descriptor.Descriptor(
+  name='AddNewItemRequest',
+  full_name='proto.AddNewItemRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='item', full_name='proto.AddNewItemRequest.item', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=247,
+  serialized_end=305,
+)
+
+
+_ADDNEWITEMRESPONSE = _descriptor.Descriptor(
+  name='AddNewItemResponse',
+  full_name='proto.AddNewItemResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message', full_name='proto.AddNewItemResponse.message', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=307,
+  serialized_end=344,
+)
+
+
+_LISTALLITEMSREQUEST = _descriptor.Descriptor(
+  name='ListAllItemsRequest',
+  full_name='proto.ListAllItemsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='proto.ListAllItemsRequest.limit', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='proto.ListAllItemsRequest.offset', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=346,
+  serialized_end=398,
 )
 
 
@@ -178,8 +299,8 @@ _LISTALLITEMSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=197,
-  serialized_end=264,
+  serialized_start=400,
+  serialized_end=467,
 )
 
 
@@ -209,8 +330,8 @@ _ITEMPRICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=266,
-  serialized_end=301,
+  serialized_start=469,
+  serialized_end=504,
 )
 
 
@@ -247,14 +368,18 @@ _ITEMPRICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=303,
-  serialized_end=376,
+  serialized_start=506,
+  serialized_end=579,
 )
 
+_ADDNEWITEMREQUEST.fields_by_name['item'].message_type = _ITEMWITHOUTPRICE
 _LISTALLITEMSRESPONSE.fields_by_name['items'].message_type = _ITEM
 _ITEMPRICERESPONSE.fields_by_name['itemPrice'].message_type = _ITEMPRICE
 DESCRIPTOR.message_types_by_name['Item'] = _ITEM
 DESCRIPTOR.message_types_by_name['ItemPrice'] = _ITEMPRICE
+DESCRIPTOR.message_types_by_name['ItemWithoutPrice'] = _ITEMWITHOUTPRICE
+DESCRIPTOR.message_types_by_name['AddNewItemRequest'] = _ADDNEWITEMREQUEST
+DESCRIPTOR.message_types_by_name['AddNewItemResponse'] = _ADDNEWITEMRESPONSE
 DESCRIPTOR.message_types_by_name['ListAllItemsRequest'] = _LISTALLITEMSREQUEST
 DESCRIPTOR.message_types_by_name['ListAllItemsResponse'] = _LISTALLITEMSRESPONSE
 DESCRIPTOR.message_types_by_name['ItemPriceRequest'] = _ITEMPRICEREQUEST
@@ -274,6 +399,27 @@ ItemPrice = _reflection.GeneratedProtocolMessageType('ItemPrice', (_message.Mess
   # @@protoc_insertion_point(class_scope:proto.ItemPrice)
   })
 _sym_db.RegisterMessage(ItemPrice)
+
+ItemWithoutPrice = _reflection.GeneratedProtocolMessageType('ItemWithoutPrice', (_message.Message,), {
+  'DESCRIPTOR' : _ITEMWITHOUTPRICE,
+  '__module__' : 'item_pb2'
+  # @@protoc_insertion_point(class_scope:proto.ItemWithoutPrice)
+  })
+_sym_db.RegisterMessage(ItemWithoutPrice)
+
+AddNewItemRequest = _reflection.GeneratedProtocolMessageType('AddNewItemRequest', (_message.Message,), {
+  'DESCRIPTOR' : _ADDNEWITEMREQUEST,
+  '__module__' : 'item_pb2'
+  # @@protoc_insertion_point(class_scope:proto.AddNewItemRequest)
+  })
+_sym_db.RegisterMessage(AddNewItemRequest)
+
+AddNewItemResponse = _reflection.GeneratedProtocolMessageType('AddNewItemResponse', (_message.Message,), {
+  'DESCRIPTOR' : _ADDNEWITEMRESPONSE,
+  '__module__' : 'item_pb2'
+  # @@protoc_insertion_point(class_scope:proto.AddNewItemResponse)
+  })
+_sym_db.RegisterMessage(AddNewItemResponse)
 
 ListAllItemsRequest = _reflection.GeneratedProtocolMessageType('ListAllItemsRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTALLITEMSREQUEST,
@@ -311,13 +457,22 @@ _ITEMSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=379,
-  serialized_end=529,
+  serialized_start=582,
+  serialized_end=799,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='AddNewItem',
+    full_name='proto.ItemService.AddNewItem',
+    index=0,
+    containing_service=None,
+    input_type=_ADDNEWITEMREQUEST,
+    output_type=_ADDNEWITEMRESPONSE,
+    serialized_options=None,
+  ),
   _descriptor.MethodDescriptor(
     name='ListAllItems',
     full_name='proto.ItemService.ListAllItems',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_LISTALLITEMSREQUEST,
     output_type=_LISTALLITEMSRESPONSE,
@@ -326,7 +481,7 @@ _ITEMSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ItemPrice',
     full_name='proto.ItemService.ItemPrice',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_ITEMPRICEREQUEST,
     output_type=_ITEMPRICERESPONSE,

@@ -15,7 +15,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY ./proto/user.pb.go ./proto
-COPY ./server/service.go .
+COPY ./service.go .
 
 
 RUN go build -o user-service .

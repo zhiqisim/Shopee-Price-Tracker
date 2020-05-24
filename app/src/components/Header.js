@@ -52,6 +52,11 @@ function HeaderButtons() {
     if (currentUser) {
         return (
             <React.Fragment>
+                <Link to={'/add-item'} className={classes.link}>
+                    <Button size="medium" className={classes.link}>
+                        <b>Add Item</b>
+                    </Button>
+                </Link>
                 <Link to={'/watchlist'} className={classes.link}>
                     <Button size="medium" className={classes.link}>
                         <b>Watch List</b>

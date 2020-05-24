@@ -12,6 +12,7 @@ import Signup from './containers/Signup';
 import ItemList from './containers/ItemList';
 import WatchList from './containers/WatchList';
 import Price from './containers/Price';
+import AddItem from './containers/AddItem';
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <div>
             <Switch>
               <PrivateRoute path="/watchlist" component={WatchList} />
+              <PrivateRoute path="/add-item" component={AddItem} />
               <Route path="/" exact component={ItemList} />
               <Route path="/login" exact component={Login} />
               <Route path="/signup" exact component={Signup} />

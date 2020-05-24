@@ -1,0 +1,12 @@
+2020-05-24 11:42:37,355 -INFO - Serving gRPC server on port 50051
+2020-05-24 11:50:03,000 -INFO - ----------START: Listing all items----------
+2020-05-24 11:50:03,067 -INFO - Success! Obtained 20 items
+2020-05-24 11:50:03,069 -INFO - ----------END: Listing all items----------
+2020-05-24 11:55:38,723 -INFO - Serving gRPC server on port 50051
+2020-05-24 12:33:37,827 -INFO - Serving gRPC server on port 50051
+2020-05-24 12:41:46,996 -INFO - Serving gRPC server on port 50051
+2020-05-24 12:44:17,658 -INFO - ----------START: Listing all items----------
+2020-05-24 12:44:17,678 -INFO - Success! Obtained 20 items
+2020-05-24 12:44:17,679 -INFO - ----------END: Listing all items----------
+2020-05-24 14:17:09,983 -INFO - Serving gRPC server on port 50051
+2020-05-24 14:26:51,855 -INFO - Serving gRPC server on port 50051

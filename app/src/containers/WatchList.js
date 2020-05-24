@@ -63,7 +63,11 @@ export default function WatchList() {
   }, []);
 
   const listenForWatchListInfo = () => {
-    API.get('/user/watchlist', { withCredentials: true })
+    const params = {
+      offset: 0,
+      limit: 20,
+    };
+    API.get('/user/watchlist', { withCredentials: true, params})
       .then(response => {
         console.log(response.data);
         if (response.data.message === "success") {

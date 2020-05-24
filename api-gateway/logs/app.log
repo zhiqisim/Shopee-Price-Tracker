@@ -1,0 +1,52 @@
+2020/05/24 04:41:46 Logging to a file in Go!
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /login                    --> main.main.func1 (5 handlers)
+[GIN-debug] POST   /signup                   --> main.main.func2 (5 handlers)
+[GIN-debug] GET    /user/is-auth             --> main.main.func3 (6 handlers)
+[GIN-debug] POST   /user/logout              --> main.main.func4 (6 handlers)
+[GIN-debug] POST   /user/add-item            --> main.main.func5 (6 handlers)
+[GIN-debug] GET    /user/watchlist           --> main.main.func6 (6 handlers)
+[GIN-debug] POST   /user/add-new-item        --> main.main.func7 (6 handlers)
+[GIN-debug] GET    /item/get-items           --> main.main.func8 (5 handlers)
+[GIN-debug] GET    /item/price               --> main.main.func9 (5 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2020/05/24 - 04:44:17 | 200 |     25.3022ms |      172.19.0.1 | GET      /item/get-items?offset=0&limit=20
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /login                    --> main.main.func1 (5 handlers)
+[GIN-debug] POST   /signup                   --> main.main.func2 (5 handlers)
+[GIN-debug] GET    /user/is-auth             --> main.main.func3 (6 handlers)
+[GIN-debug] POST   /user/logout              --> main.main.func4 (6 handlers)
+[GIN-debug] POST   /user/add-item            --> main.main.func5 (6 handlers)
+[GIN-debug] GET    /user/watchlist           --> main.main.func6 (6 handlers)
+[GIN-debug] POST   /user/add-new-item        --> main.main.func7 (6 handlers)
+[GIN-debug] GET    /item/get-items           --> main.main.func8 (5 handlers)
+[GIN-debug] GET    /item/price               --> main.main.func9 (5 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2020/05/24 - 06:19:53 | 200 |    123.2466ms |      172.19.0.1 | POST     /login
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /login                    --> main.main.func1 (5 handlers)
+[GIN-debug] POST   /signup                   --> main.main.func2 (5 handlers)
+[GIN-debug] GET    /user/is-auth             --> main.main.func3 (6 handlers)
+[GIN-debug] POST   /user/logout              --> main.main.func4 (6 handlers)
+[GIN-debug] POST   /user/add-item            --> main.main.func5 (6 handlers)
+[GIN-debug] GET    /user/watchlist           --> main.main.func6 (6 handlers)
+[GIN-debug] POST   /user/add-new-item        --> main.main.func7 (6 handlers)
+[GIN-debug] GET    /item/get-items           --> main.main.func8 (5 handlers)
+[GIN-debug] GET    /item/price               --> main.main.func9 (5 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2020/05/24 - 06:27:55 | 200 |     111.683ms |      172.19.0.1 | POST     /login

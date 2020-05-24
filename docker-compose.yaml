@@ -7,8 +7,8 @@ services:
       - "80:80"
     depends_on:
       - api-gateway
-  #   # volumes:
-  #   #   - ./app:/app
+    volumes:
+      - ./app/logs:/var/log/nginx
 
   # api-gateway with GO
   api-gateway:
@@ -22,8 +22,8 @@ services:
       - user-service
       - item-service
       - redis-user-sessions
-  #   # volumes:
-  #   #   - ./api-gateway:/api
+    volumes:
+      - ./api-gateway/logs:/api/logs
 
   # redis cache for user session management
   redis-user-sessions:
@@ -40,8 +40,8 @@ services:
       - "4040:4040"
     depends_on:
       - user-db
-  #   # volumes:
-  #   #   - ./user-service:/user-service
+    volumes:
+      - ./user-service/logs:/user-service/logs
 
   # item service with python
   item-service:
@@ -50,16 +50,16 @@ services:
       - "50051:50051"
     depends_on:
       - items-db
-  # #   # volumes:
-  # #   #   - ./item-service:/item-service
+    volumes:
+      - ./item-service:/item-service
 
   # price service with python
   price-service:
     build: ./price-service
     depends_on:
       - items-db
-    # volumes:
-      # - ./price-service:/price-service
+    volumes:
+      - ./price-service:/price-service
 
   
   # user db with mySQL

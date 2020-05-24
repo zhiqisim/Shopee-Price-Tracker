@@ -16,7 +16,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY ./proto ./proto
-COPY ./src/api.go .
+COPY ./api.go .
 
 RUN go build -o api-gateway .
 

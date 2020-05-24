@@ -14,6 +14,11 @@ class ItemServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.AddNewItem = channel.unary_unary(
+                '/proto.ItemService/AddNewItem',
+                request_serializer=item__pb2.AddNewItemRequest.SerializeToString,
+                response_deserializer=item__pb2.AddNewItemResponse.FromString,
+                )
         self.ListAllItems = channel.unary_unary(
                 '/proto.ItemService/ListAllItems',
                 request_serializer=item__pb2.ListAllItemsRequest.SerializeToString,
@@ -29,6 +34,13 @@ class ItemServiceStub(object):
 class ItemServiceServicer(object):
     """Service to manage list of itemservices
     """
+
+    def AddNewItem(self, request, context):
+        """Add new Item
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def ListAllItems(self, request, context):
         """ListAllItems
@@ -47,6 +59,11 @@ class ItemServiceServicer(object):
 
 def add_ItemServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'AddNewItem': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddNewItem,
+                    request_deserializer=item__pb2.AddNewItemRequest.FromString,
+                    response_serializer=item__pb2.AddNewItemResponse.SerializeToString,
+            ),
             'ListAllItems': grpc.unary_unary_rpc_method_handler(
                     servicer.ListAllItems,
                     request_deserializer=item__pb2.ListAllItemsRequest.FromString,
@@ -67,6 +84,22 @@ def add_ItemServiceServicer_to_server(servicer, server):
 class ItemService(object):
     """Service to manage list of itemservices
     """
+
+    @staticmethod
+    def AddNewItem(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/proto.ItemService/AddNewItem',
+            item__pb2.AddNewItemRequest.SerializeToString,
+            item__pb2.AddNewItemResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def ListAllItems(request,

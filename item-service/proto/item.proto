@@ -28,19 +28,33 @@ message ItemPrice {
     bool flash_sale = 3;
 }
 
-// // Request to add an item into item db
-// message addItemRequest{
-//     Item item = 1;
-// }
+message ItemWithoutPrice {
+    // item_id of item
+    string item_id = 1;
 
-// // Response to add an item into item db
-// message addItemResponse{
-//     string message = 1;
-// }
+    // shop_id of item
+    string shop_id = 2;
+
+    // item_name of the item
+    string item_name = 3;
+}
+
+// Request to add an item into item db
+message AddNewItemRequest{
+    ItemWithoutPrice item = 1;
+}
+
+// Response to add an item into item db
+message AddNewItemResponse{
+    string message = 1;
+}
 
 // Request to list all items
 message ListAllItemsRequest{
-    
+    // limit for pagination
+    int64 limit = 1;
+    // offset for pagination
+    int64 offset = 2;
 }
 
 // Contains response for listing all items
@@ -74,6 +88,10 @@ message ItemPriceResponse{
 
 // Service to manage list of itemservices
 service ItemService {
+
+    // Add new Item
+    rpc AddNewItem(AddNewItemRequest) returns (AddNewItemResponse);
+
     // ListAllItems
     rpc ListAllItems(ListAllItemsRequest) returns (ListAllItemsResponse);
 

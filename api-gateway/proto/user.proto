@@ -93,6 +93,10 @@ message AddItemResponse{
 message ListItemsRequest{
     // username
     string username = 1;
+    // limit for pagination
+    int64 limit = 2;
+    // offset for pagination
+    int64 offset = 3;
 }
 
 // Response to list items

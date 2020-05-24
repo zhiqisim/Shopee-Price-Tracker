@@ -9,7 +9,7 @@ import re
 import pytz
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, filename='logs/app.log', format='%(asctime)s -%(levelname)s - %(message)s')
 # Scheduled Job to run hourly
 def price_job():
     singapore=pytz.timezone('Asia/Singapore')
@@ -29,12 +29,13 @@ def get_flash_deal():
         url = api + '/flash_sale/get_items'
         req = requests.get(url)
     except requests.exceptions.HTTPError as err:
-        logging.error("Failed to fetch Shopee API :{}".format(err))
+        logging.exception("Failed to fetch Shopee API :{}".format(err))
     
     sql = 'INSERT INTO item(item_id, shop_id, item_name, price) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE item_id = item_id' 
     
     flash_items_data = req.json()['data']['items']
     my_data = []
+    logging.info("-----------START: Updating item data with new Flash Deals!-----------")
     for item in flash_items_data:
         item_id = item['itemid']
         shop_id = item['shopid']
@@ -42,23 +43,21 @@ def get_flash_deal():
         item_name = re.sub(r'([^\s\w]|_)+', '', item['name'].strip().encode("utf-8"))
         item_price = item['price']
         temp = [item_id, shop_id, item_name, item_price]
-
-        # logging.debug(tuple(temp))
-        
         my_data.append(tuple(temp))
     try:
         mydb = initSQL()
         mycursor = mydb.cursor(prepared=True)
         mycursor.executemany(sql, my_data)
     except mysql.connector.Error as err:
-        logging.error("Failed FlashSales insert :{}".format(err)) 
+        logging.exception("Failed FlashSales insert :{}".format(err)) 
     finally:
         mydb.commit()
-        mycursor.close()  
+        logging.info('%s new flash deals items inserted into item table' %mycursor.rowcount)
+        mycursor.close()
         del mycursor
         mydb.close()
         del mydb
-    logging.info("Flash deal items added to itemdb in item table")
+        logging.info("-----------END: Updating item data with new Flash Deals!-----------")
 
 
 def update_items():
@@ -71,7 +70,9 @@ def update_items():
         mycursor = mydb.cursor(prepared=True)
         mycursor.execute("SELECT item_id, shop_id, price FROM item")
         myresult = mycursor.fetchall()
-        logging.info("Updating data!")
+        logging.info("-----------START: Updating item_price data!-----------")
+        updateCount = 0
+        insertCount = 0
         for x in myresult:
             item_id = x[0]
             shop_id = x[1]
@@ -85,12 +86,10 @@ def update_items():
                 continue
                 item['itemid'], item['shopid'], item['price'], datetime.now()
             fetched_item_price = item['price']
+            fetched_item_name = item['name']
             fetched_flash_sale = False if item['flash_sale'] == None else True
             singapore=pytz.timezone('Asia/Singapore')
             fetched_datetime = singapore.localize(datetime.now()).strftime('%Y-%m-%d %H:%M:%S')
-
-            # logging.debug(fetched_datetime, '---', fetched_item_price, '---', fetched_flash_sale)
-
             # update price on item table and item_price table if price changed
             # if price check if there is an entry already in the item_price table if not still insert
             if price != fetched_item_price:
@@ -102,25 +101,24 @@ def update_items():
                 sql = 'INSERT INTO item_price(item_id, price_datetime, price, flash_sale) VALUES(%s, %s, %s, %s)'
                 adr = (item_id, fetched_datetime, fetched_item_price, fetched_flash_sale)
                 mycursor.execute(sql, adr)
-                logging.info('Updated price of %s' %item_id)
+                logging.debug('Updated price of %s' %fetched_item_name)
+                updateCount+=1
             else:
                 mycursor2 = mydb.cursor(prepared=True)
                 sql = 'SELECT item_id FROM item_price WHERE item_id = %s'
                 adr = (item_id, )
                 mycursor2.execute(sql, adr)
                 records = mycursor2.fetchall()
-
-                # logging.debug("Row count = ", mycursor2.rowcount)
-
                 if mycursor2.rowcount == 0:
                     sql = 'INSERT INTO item_price(item_id, price_datetime, price, flash_sale) VALUES(%s, %s, %s, %s)'
                     adr = (item_id, fetched_datetime, fetched_item_price, fetched_flash_sale)
                     mycursor2.execute(sql, adr)
-                    logging.info('Inserted new price of %s' %item_id)   
+                    logging.debug('Inserted new price of %s' %fetched_item_name)   
+                    insertCount+=1
     except requests.exceptions.HTTPError as err:
-        logging.error("Failed to fetch Shopee API :{}".format(err))
+        logging.exception("Failed to fetch Shopee API :{}".format(err))
     except mysql.connector.Error as err:
-        logging.error("Failed updating item_price table :{}".format(err))
+        logging.exception("Failed updating item_price table :{}".format(err))
     finally:
         mydb.commit()
         mycursor.close()
@@ -129,4 +127,6 @@ def update_items():
         del mycursor2
         mydb.close()
         del mydb
-    logging.info("Updated items price changelog to the itemdb in the item_price table")
+        logging.info('%s items added into item_price table with their latest price' %updateCount)
+        logging.info('%s new items inserted into item_price with their first price changelog'  %insertCount)
+        logging.info("-----------END: Updating item_price data!-----------")

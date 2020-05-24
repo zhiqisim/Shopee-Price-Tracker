@@ -14,6 +14,9 @@ import API from "../utils/API";
 import Header from '../components/Header';
 import { AuthContext } from "../utils/Auth.js";
 
+// infinitescroll component
+// import InfiniteScroll from 'react-infinite-scroller';
+import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,12 +47,43 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+const ARRAY_SIZE = 20;
+
+function loadItems(prevArray = [], startCursor = 0) {
+  return new Promise(resolve => {
+    let newArray = prevArray;
+    const params = {
+      offset: startCursor + ARRAY_SIZE,
+      limit: 60,
+    };
+    API.get('/item/get-items', { params })
+      .then(response => {
+        console.log(response.data);
+        if (response.data.message === "success") {
+            const jsonData = response.data.items;
+            jsonData.forEach((doc) => newArray.push(doc));
+            console.log(newArray);
+          }
+          resolve(newArray);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      
+    }
+  );
+}
+
 export default function ItemsList() {
   const classes = useStyles();
 
   // Set default as null so we
   // know if it's still loading
-  const [itemsInfo, setItems] = useState(null);
+  // const [itemsInfo, setItems] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+
 
   const { currentUser } = useContext(AuthContext);
 
@@ -57,19 +91,75 @@ export default function ItemsList() {
   // API. The second argument
   // with the empty array makes sure the
   // function only executes once
-  useEffect(() => {
-    listenForItemInfo();
-  }, []);
+  // const listenForItemInfo = () => {
+  //   const params = {
+  //     offset: scrollInfo.offset,
+  //     limit: 60,
+  //   };
+  //   API.get('/item/get-items', { params })
+  //     .then(response => {
+  //       console.log(response.data);
+  //       if (response.data.message === "success") {
+  //         if (!itemsInfo) {
+  //           const allItems = [];
+  //           const jsonData = response.data.items;
+  //           jsonData.forEach((doc) => allItems.push(doc));
+  //           console.log(allItems);
+  //           setItems(allItems);
+  //           const info = scrollInfo;
+  //           info.offset += 60;
+  //           setScroll(info);
+  //         } else {
+  //           const allItems = itemsInfo;
+  //           const jsonData = response.data.items;
+  //           jsonData.forEach((doc) => allItems.push(doc));
+  //           console.log(allItems);
+  //           setItems(allItems);
+  //           const info = scrollInfo;
+  //           info.offset += 60;
+  //           setScroll(info);
+  //         }
+  //         console.log(scrollInfo);
 
-  const listenForItemInfo = () => {
-    API.get('/item/get-items')
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
+
+  function handleLoadMore() {
+    setLoading(true);
+    loadItems(items, items.length).then(newArray => {
+      setLoading(false);
+      setItems(newArray);
+    });
+  }
+
+  // useEffect(() => {
+  //   listenForItemInfo();
+  // }, [itemsInfo]);
+
+  const infiniteRef = useInfiniteScroll({
+    loading,
+    hasNextPage: true,
+    onLoadMore: handleLoadMore,
+  });
+
+
+  const addItem = (item_id, item_name) => {
+    var bodyFormData = new FormData();
+    bodyFormData.append("item_id", item_id);
+    bodyFormData.append("item_name", item_name);
+    API.post('/user/add-item', bodyFormData, { withCredentials: true })
       .then(response => {
         console.log(response.data);
-        if (response.data.message === "success"){
-          const allItems = [];
-          const jsonData = response.data.items;
-          jsonData.forEach((doc) => allItems.push(doc));
-          setItems(allItems)
+        if (response.data.message === "success") {
+          alert("Added item to your watchlist!")
+        } else if (currentUser) {
+          alert("The item is already in your watchlist")
+        } else {
+          alert("Please login/signup!")
         }
       })
       .catch(error => {
@@ -77,84 +167,58 @@ export default function ItemsList() {
       });
   }
 
-  const addItem = (item_id, item_name) => {
-    var bodyFormData = new FormData();
-    bodyFormData.append("item_id", item_id);
-    bodyFormData.append("item_name", item_name);
-    API.post('/user/add-item', bodyFormData, { withCredentials: true })
-        .then(response => {
-            console.log(response.data);
-            if (response.data.message === "success"){
-              alert("Added item to your watchlist!")
-            } else if (currentUser){
-              alert("The item is already in your watchlist")
-            } else{
-              alert("Please login/signup!")
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
-
-  if (!itemsInfo) {
-    return (
-      <div>
-        Please wait...
-      </div>
-    )
-  }
-
-
+  // if (items.length == 0) {
+  //   return (
+  //     <div>
+  //       Please wait...
+  //     </div>
+  //   )
+  // }
 
   return (
     <React.Fragment>
       <Header classes={classes} />
-      <List className={classes.root}>
+      <List ref={infiniteRef} className={classes.root}>
         <Container className={classes.listContainer} maxWidth="xs">
-          {itemsInfo.map(({ item_name, item_price, item_id, shop_id }, index) => (
-            <React.Fragment key= {index}>
-              <Card className={classes.card}>
-                <CardContent className={classes.cardContent}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemText
-                      primary={<React.Fragment>
+          {items.map(({ item_name, item_price, item_id, shop_id }, index) => (
+            <Card className={classes.card} key={index}>
+              <CardContent className={classes.cardContent}>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    primary={<React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body1"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {item_name}
+                      </Typography>
+
+                    </React.Fragment>}
+                    secondary={
+                      <React.Fragment>
+                        <br />
                         <Typography
                           component="span"
-                          variant="body1"
+                          variant="body2"
                           className={classes.inline}
                           color="textPrimary"
                         >
-                          {item_name}
+                          Current Price: ${item_price / 100000.0}
                         </Typography>
 
-                      </React.Fragment>}
-                      secondary={
-                        <React.Fragment>
-                          <br />
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            Current Price: ${item_price / 100000.0}
-                          </Typography>
-
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary" variant="outlined" className={classes.cardButton} onClick= {addItem.bind(this,item_id, item_name)}>
-                    Add to Watchlist
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+              </CardContent>
+              <CardActions>
+                <Button size="small" color="primary" variant="outlined" className={classes.cardButton} onClick={addItem.bind(this, item_id, item_name)}>
+                  Add to Watchlist
                   </Button>
-                </CardActions>
-              </Card>
-
-            </React.Fragment>
-
+              </CardActions>
+            </Card>
           ))}
         </Container>
       </List>
