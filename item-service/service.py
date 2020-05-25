@@ -7,14 +7,14 @@ import grpc
 
 import item_pb2
 import item_pb2_grpc
-from sqlConnector import initSQL
+# from sqlConnector import initSQL
+import sqlConnector
 
 import mysql.connector
 
 import datetime
 
 class ItemService(item_pb2_grpc.ItemServiceServicer):
-
     def AddNewItem(self, request, context):
         url = 'https://shopee.sg/api/v2/item/get'
         try:
@@ -26,7 +26,8 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
                 logging.error("Item not found in Shopee's API!")
                 return item_pb2.AddNewItemResponse(message="error")
             fetched_item_price = item['price']
-            mydb = initSQL()
+            # Get connection object from a pool
+            mydb = sqlConnector.connection_pool.get_connection() 
             cursor = mydb.cursor(prepared=True)
             sql = 'INSERT INTO item(item_id, shop_id, item_name, price) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE item_id = item_id'
             adr = (request.item.item_id, request.item.shop_id, request.item.item_name, fetched_item_price,)
@@ -52,7 +53,8 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
         logging.info("----------START: Listing all items----------")
         myresult = []
         try:
-            mydb = initSQL()  
+            # Get connection object from a pool
+            mydb = sqlConnector.connection_pool.get_connection()  
             mycursor = mydb.cursor(prepared=True)
             sql = 'SELECT item_id, shop_id, item_name, price FROM item WHERE id > %s LIMIT %s'
             offset = str(request.offset)
@@ -64,7 +66,7 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
             logging.exception("Failed ListAllItem Select :{}".format(err))
             return item_pb2.ListAllItemsResponse(message="error")   
         finally:
-            logging.info('Success! Obtained %s items' %mycursor.rowcount)
+            logging.debug('Success! Obtained %s items' %mycursor.rowcount)
             mycursor.close()
             del mycursor
             mydb.close()
@@ -84,7 +86,8 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
         logging.info("----------START: Obtaining price of item----------")
         myresult = []
         try:
-            mydb = initSQL()  
+            # Get connection object from a pool
+            mydb = sqlConnector.connection_pool.get_connection()  
             item_proto = item_pb2.Item()
             mycursor = mydb.cursor(prepared=True)
             sql = "SELECT price_datetime, price, flash_sale FROM item_price WHERE item_id=%s ORDER BY price_datetime DESC"

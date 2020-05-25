@@ -55,7 +55,7 @@ function loadItems(prevArray = [], startCursor = 0) {
     let newArray = prevArray;
     const params = {
       offset: startCursor + ARRAY_SIZE,
-      limit: 60,
+      limit: 40,
     };
     API.get('/item/get-items', { params })
       .then(response => {

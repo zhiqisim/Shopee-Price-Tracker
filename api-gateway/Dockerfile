@@ -1,5 +1,8 @@
 FROM golang:1.12-alpine as build-env
 
+ENV TZ Asia/Singapore
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ENV GO111MODULE=on
 
 RUN apk update && apk add bash ca-certificates git gcc g++ libc-dev

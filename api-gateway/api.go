@@ -15,6 +15,7 @@ import (
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"google.golang.org/grpc"
 )
 
@@ -104,7 +105,14 @@ func main() {
 	defer file.Close()
 
 	gin.DefaultWriter = io.MultiWriter(file, os.Stdout)
-	router := gin.Default()
+	// router := gin.Default()
+	router := gin.New()
+	p := ginprometheus.NewPrometheus("gin")
+	// Preserving a low cardinality for the request counter - deleting query params
+	p.ReqCntURLLabelMappingFn = func(c *gin.Context) string {
+		return c.Request.URL.Path
+	}
+	p.Use(router)
 	// - No origin allowed by default
 	// - GET,POST, PUT, HEAD methods
 	// - Credentials share disabled
@@ -120,6 +128,16 @@ func main() {
 
 	// max age of each session in seconds
 	sessionTimeout := 60 * 60 // 1 hour
+
+	// Global middleware
+	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.
+	// By default gin.DefaultWriter = os.Stdout
+	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{
+		SkipPaths: []string{"/metrics"},
+	}))
+
+	// Recovery middleware recovers from any panics and writes a 500 if there was one.
+	router.Use(gin.Recovery())
 
 	/*
 		Group: public (no auth required)
@@ -396,5 +414,5 @@ func main() {
 		})
 	}
 
-	router.Run(":8080")
+	router.Run(":8000")
 }

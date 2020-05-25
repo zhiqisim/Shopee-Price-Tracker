@@ -22,7 +22,7 @@ type server struct{}
 
 var db *sql.DB
 
-func InitializeMySQL() {
+func initializeMySQL() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s",
 		"root",
 		"root",
@@ -43,7 +43,7 @@ func InitializeMySQL() {
 	dBConnection.SetConnMaxLifetime(time.Second * 10)
 }
 
-func GetMySQLConnection() *sql.DB {
+func getMySQLConnection() *sql.DB {
 	return db
 }
 
@@ -57,8 +57,7 @@ func main() {
 
 	mw := io.MultiWriter(os.Stdout, file)
 	log.SetOutput(mw)
-	// log.SetLevel(log.InfoLevel)
-	InitializeMySQL()
+	initializeMySQL()
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
 		log.Panic(err)
@@ -89,9 +88,9 @@ func (s *server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	user := req.User
 	username := user.Username
 	password := user.Password
-	var fromdb_username string
-	var fromdb_password string
-	errr := stmt.QueryRow(username).Scan(&fromdb_username, &fromdb_password)
+	var fromdbUsername string
+	var fromdbPassword string
+	errr := stmt.QueryRow(username).Scan(&fromdbUsername, &fromdbPassword)
 	if errr != nil {
 		log.Error(errr)
 		return &proto.LoginResponse{
@@ -99,7 +98,7 @@ func (s *server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 		}, nil
 	}
 	// check password hash
-	errf := bcrypt.CompareHashAndPassword([]byte(fromdb_password), []byte(password))
+	errf := bcrypt.CompareHashAndPassword([]byte(fromdbPassword), []byte(password))
 	if errf != nil { //Password does not match!
 		log.Error(errf)
 		return &proto.LoginResponse{

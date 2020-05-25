@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # # Cron scheduling
     # scheduler.add_job(price_job, 'cron', hour='0-23', minute= '10')
     # Interval scheduling
-    start_time = datetime.now() + timedelta(seconds=60)
+    start_time = datetime.now() + timedelta(seconds=300)
     scheduler.add_job(price_job, 'interval', hours=1, start_date=start_time)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
     try:

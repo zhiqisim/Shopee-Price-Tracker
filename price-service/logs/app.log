@@ -39,3 +39,327 @@
 2020-05-24 14:27:52,804 -INFO - 0 new flash deals items inserted into item table
 2020-05-24 14:27:52,805 -INFO - -----------END: Updating item data with new Flash Deals!-----------
 2020-05-24 14:27:52,865 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 14:35:30,667 -INFO - 146 items added into item_price table with their latest price
+2020-05-24 14:35:30,668 -INFO - 54 new items inserted into item_price with their first price changelog
+2020-05-24 14:35:30,668 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 14:35:30,676 -ERROR - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 15:27:51 +08)" raised an exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/price-service/pricetracker.py", line 18, in price_job
+    update_items()
+  File "/price-service/pricetracker.py", line 80, in update_items
+    req = requests.get(url, params={'itemid': item_id, 'shopid': shop_id})
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/adapters.py", line 498, in send
+    raise ConnectionError(err, request=request)
+ConnectionError: ('Connection aborted.', error(0, 'Error'))
+2020-05-24 14:57:30,787 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 14:57:30,790 -INFO - Added job "price_job" to job store "default"
+2020-05-24 14:57:30,791 -INFO - Scheduler started
+2020-05-24 14:58:30,724 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 14:58:30 +08)" (scheduled at 2020-05-24 14:58:30.721959+08:00)
+2020-05-24 14:58:30,726 -INFO - -----------Start time of job: 2020-05-24 14:58:30-----------
+2020-05-24 14:58:31,573 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 14:58:31,708 -INFO - 0 new flash deals items inserted into item table
+2020-05-24 14:58:31,708 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 14:58:31,749 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 15:05:55,593 -INFO - 2 items added into item_price table with their latest price
+2020-05-24 15:05:55,593 -INFO - 100 new items inserted into item_price with their first price changelog
+2020-05-24 15:05:55,594 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 15:05:55,594 -INFO - -----------End time of job: 2020-05-24 15:05:55-----------
+2020-05-24 15:05:55,595 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 15:58:30 +08)" executed successfully
+2020-05-24 16:26:05,192 -WARNING - Run time of job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 15:58:30 +08)" was missed by 0:27:34.470307
+2020-05-24 17:05:27,338 -WARNING - Run time of job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 17:58:30 +08)" was missed by 0:06:56.616701
+2020-05-24 18:01:15,034 -WARNING - Run time of job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 17:58:30 +08)" was missed by 0:02:44.312202
+2020-05-24 18:09:31,366 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 18:09:31,369 -INFO - Added job "price_job" to job store "default"
+2020-05-24 18:09:31,372 -INFO - Scheduler started
+2020-05-24 18:10:31,312 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 18:10:31 +08)" (scheduled at 2020-05-24 18:10:31.310155+08:00)
+2020-05-24 18:10:31,314 -INFO - -----------Start time of job: 2020-05-24 18:10:31-----------
+2020-05-24 18:10:31,991 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 18:10:32,134 -INFO - 153 new flash deals items inserted into item table
+2020-05-24 18:10:32,135 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 18:10:32,179 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 18:19:30,233 -INFO - 209 items added into item_price table with their latest price
+2020-05-24 18:19:30,233 -INFO - 150 new items inserted into item_price with their first price changelog
+2020-05-24 18:19:30,234 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 18:19:30,235 -INFO - -----------End time of job: 2020-05-24 18:19:30-----------
+2020-05-24 18:19:30,236 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 19:10:31 +08)" executed successfully
+2020-05-24 19:10:10,412 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 19:10:10,413 -INFO - Added job "price_job" to job store "default"
+2020-05-24 19:10:10,413 -INFO - Scheduler started
+2020-05-24 19:11:10,359 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 20:11:10 +08)" (scheduled at 2020-05-24 19:11:10.357212+08:00)
+2020-05-24 19:11:10,361 -INFO - -----------Start time of job: 2020-05-24 19:11:10-----------
+2020-05-24 19:11:11,087 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 19:11:11,278 -INFO - 0 new flash deals items inserted into item table
+2020-05-24 19:11:11,279 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 19:11:11,325 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 19:19:04,239 -INFO - 3 items added into item_price table with their latest price
+2020-05-24 19:19:04,241 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-24 19:19:04,241 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 19:19:04,242 -INFO - -----------End time of job: 2020-05-24 19:19:04-----------
+2020-05-24 19:19:04,243 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 20:11:10 +08)" executed successfully
+2020-05-24 20:11:10,363 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:11:10 +08)" (scheduled at 2020-05-24 20:11:10.357212+08:00)
+2020-05-24 20:11:10,366 -INFO - -----------Start time of job: 2020-05-24 20:11:10-----------
+2020-05-24 20:11:11,343 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 20:11:11,443 -INFO - 109 new flash deals items inserted into item table
+2020-05-24 20:11:11,444 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 20:11:11,490 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 20:20:28,564 -INFO - 190 items added into item_price table with their latest price
+2020-05-24 20:20:28,566 -INFO - 109 new items inserted into item_price with their first price changelog
+2020-05-24 20:20:28,566 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 20:20:28,567 -INFO - -----------End time of job: 2020-05-24 20:20:28-----------
+2020-05-24 20:20:28,568 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:11:10 +08)" executed successfully
+2020-05-24 20:51:33,244 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 20:51:33,245 -INFO - Added job "price_job" to job store "default"
+2020-05-24 20:51:33,246 -INFO - Scheduler started
+2020-05-24 20:52:33,183 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 20:52:33 +08)" (scheduled at 2020-05-24 20:52:33.182231+08:00)
+2020-05-24 20:52:33,184 -INFO - -----------Start time of job: 2020-05-24 20:52:33-----------
+2020-05-24 20:52:34,053 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 20:52:34,194 -INFO - 0 new flash deals items inserted into item table
+2020-05-24 20:52:34,194 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 20:52:34,238 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 21:01:09,151 -INFO - 106 items added into item_price table with their latest price
+2020-05-24 21:01:09,151 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-24 21:01:09,152 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 21:01:09,153 -INFO - -----------End time of job: 2020-05-24 21:01:09-----------
+2020-05-24 21:01:09,153 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:52:33 +08)" executed successfully
+2020-05-24 21:10:55,484 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 21:10:55,486 -INFO - Added job "price_job" to job store "default"
+2020-05-24 21:10:55,487 -INFO - Scheduler started
+2020-05-24 21:11:55,377 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:11:55 +08)" (scheduled at 2020-05-24 21:11:55.375997+08:00)
+2020-05-24 21:11:55,378 -INFO - -----------Start time of job: 2020-05-24 21:11:55-----------
+2020-05-24 21:11:55,866 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 21:11:55,993 -INFO - 99 new flash deals items inserted into item table
+2020-05-24 21:11:55,993 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 21:11:56,043 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 21:14:44,515 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 21:14:44,517 -INFO - Added job "price_job" to job store "default"
+2020-05-24 21:14:44,518 -INFO - Scheduler started
+2020-05-24 21:15:44,452 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:15:44 +08)" (scheduled at 2020-05-24 21:15:44.450486+08:00)
+2020-05-24 21:15:44,453 -INFO - -----------Start time of job: 2020-05-24 21:15:44-----------
+2020-05-24 21:15:44,915 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 21:15:45,000 -INFO - 0 new flash deals items inserted into item table
+2020-05-24 21:15:45,000 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 21:15:45,064 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 21:18:27,742 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 21:18:27,743 -INFO - Added job "price_job" to job store "default"
+2020-05-24 21:18:27,744 -INFO - Scheduler started
+2020-05-24 21:22:01,063 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 21:22:01,064 -INFO - Added job "price_job" to job store "default"
+2020-05-24 21:22:01,065 -INFO - Scheduler started
+2020-05-24 21:27:00,990 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 21:27:00 +08)" (scheduled at 2020-05-24 21:27:00.989267+08:00)
+2020-05-24 21:27:00,991 -INFO - -----------Start time of job: 2020-05-24 21:27:00-----------
+2020-05-24 21:27:01,775 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 21:27:01,881 -INFO - 0 new flash deals items inserted into item table
+2020-05-24 21:27:01,882 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 21:27:01,939 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 21:35:59,568 -INFO - 45 items added into item_price table with their latest price
+2020-05-24 21:35:59,570 -INFO - 98 new items inserted into item_price with their first price changelog
+2020-05-24 21:35:59,570 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 21:35:59,571 -INFO - -----------End time of job: 2020-05-24 21:35:59-----------
+2020-05-24 21:35:59,571 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 22:27:00 +08)" executed successfully
+2020-05-24 22:06:32,656 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 22:06:32,657 -INFO - Added job "price_job" to job store "default"
+2020-05-24 22:06:32,658 -INFO - Scheduler started
+2020-05-24 22:10:34,439 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-24 22:10:34,441 -INFO - Added job "price_job" to job store "default"
+2020-05-24 22:10:34,441 -INFO - Scheduler started
+2020-05-24 22:15:34,386 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 22:15:34 +08)" (scheduled at 2020-05-24 22:15:34.385059+08:00)
+2020-05-24 22:15:34,389 -INFO - -----------Start time of job: 2020-05-24 22:15:34-----------
+2020-05-24 22:15:35,582 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-24 22:15:35,725 -INFO - 104 new flash deals items inserted into item table
+2020-05-24 22:15:35,725 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-24 22:15:35,788 -INFO - -----------START: Updating item_price data!-----------
+2020-05-24 22:25:06,635 -INFO - 157 items added into item_price table with their latest price
+2020-05-24 22:25:06,636 -INFO - 102 new items inserted into item_price with their first price changelog
+2020-05-24 22:25:06,637 -INFO - -----------END: Updating item_price data!-----------
+2020-05-24 22:25:06,638 -INFO - -----------End time of job: 2020-05-24 22:25:06-----------
+2020-05-24 22:25:06,638 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-24 23:15:34 +08)" executed successfully
+2020-05-25 00:33:03,246 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 00:33:03,248 -INFO - Added job "price_job" to job store "default"
+2020-05-25 00:33:03,248 -INFO - Scheduler started
+2020-05-25 00:38:03,196 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 00:38:03 +08)" (scheduled at 2020-05-25 00:38:03.195689+08:00)
+2020-05-25 00:38:03,198 -INFO - -----------Start time of job: 2020-05-25 00:38:03-----------
+2020-05-25 00:38:04,506 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 00:38:04,639 -INFO - 142 new flash deals items inserted into item table
+2020-05-25 00:38:04,640 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 00:38:04,692 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 00:47:12,475 -ERROR - Item not found!
+2020-05-25 00:48:20,068 -INFO - 248 items added into item_price table with their latest price
+2020-05-25 00:48:20,069 -INFO - 134 new items inserted into item_price with their first price changelog
+2020-05-25 00:48:20,070 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 00:48:20,070 -INFO - -----------End time of job: 2020-05-25 00:48:20-----------
+2020-05-25 00:48:20,071 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 01:38:03 +08)" executed successfully
+2020-05-25 09:34:29,768 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 09:34:29,769 -INFO - Added job "price_job" to job store "default"
+2020-05-25 09:34:29,770 -INFO - Scheduler started
+2020-05-25 09:39:29,657 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 09:39:29 +08)" (scheduled at 2020-05-25 09:39:29.656446+08:00)
+2020-05-25 09:39:29,659 -INFO - -----------Start time of job: 2020-05-25 09:39:29-----------
+2020-05-25 09:39:31,392 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 09:39:31,465 -INFO - 89 new flash deals items inserted into item table
+2020-05-25 09:39:31,466 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 09:39:31,515 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 09:46:15,258 -ERROR - Item not found!
+2020-05-25 09:50:09,916 -ERROR - Item not found!
+2020-05-25 09:52:02,206 -INFO - 214 items added into item_price table with their latest price
+2020-05-25 09:52:02,206 -INFO - 86 new items inserted into item_price with their first price changelog
+2020-05-25 09:52:02,207 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 09:52:02,207 -INFO - -----------End time of job: 2020-05-25 09:52:02-----------
+2020-05-25 09:52:02,208 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 10:39:29 +08)" executed successfully
+2020-05-25 10:39:29,658 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 10:39:29 +08)" (scheduled at 2020-05-25 10:39:29.656446+08:00)
+2020-05-25 10:39:29,660 -INFO - -----------Start time of job: 2020-05-25 10:39:29-----------
+2020-05-25 10:39:30,131 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 10:39:30,190 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 10:39:30,190 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 10:39:30,242 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 10:44:48,952 -ERROR - Item not found!
+2020-05-25 10:47:36,447 -ERROR - Item not found!
+2020-05-25 10:48:36,567 -INFO - 14 items added into item_price table with their latest price
+2020-05-25 10:48:36,567 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 10:48:36,568 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 10:48:36,569 -INFO - -----------End time of job: 2020-05-25 10:48:36-----------
+2020-05-25 10:48:36,569 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 11:39:29 +08)" executed successfully
+2020-05-25 11:12:15,918 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 11:12:15,919 -INFO - Added job "price_job" to job store "default"
+2020-05-25 11:12:15,920 -INFO - Scheduler started
+2020-05-25 11:17:15,862 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 11:17:15 +08)" (scheduled at 2020-05-25 11:17:15.860575+08:00)
+2020-05-25 11:17:15,863 -INFO - -----------Start time of job: 2020-05-25 11:17:15-----------
+2020-05-25 11:17:16,594 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 11:17:16,676 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 11:17:16,677 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 11:17:16,745 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 11:21:18,315 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 11:21:18,316 -INFO - Added job "price_job" to job store "default"
+2020-05-25 11:21:18,316 -INFO - Scheduler started
+2020-05-25 11:26:18,269 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 11:26:18 +08)" (scheduled at 2020-05-25 11:26:18.265967+08:00)
+2020-05-25 11:26:18,271 -INFO - -----------Start time of job: 2020-05-25 11:26:18-----------
+2020-05-25 11:26:19,313 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 11:26:19,375 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 11:26:19,376 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 11:26:19,438 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 11:35:38,938 -INFO - 14 items added into item_price table with their latest price
+2020-05-25 11:35:38,939 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 11:35:38,939 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 11:35:38,940 -INFO - -----------End time of job: 2020-05-25 11:35:38-----------
+2020-05-25 11:35:38,940 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 12:26:18 +08)" executed successfully
+2020-05-25 12:26:18,274 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 13:26:18 +08)" (scheduled at 2020-05-25 12:26:18.265967+08:00)
+2020-05-25 12:26:18,276 -INFO - -----------Start time of job: 2020-05-25 12:26:18-----------
+2020-05-25 12:26:18,288 -ERROR - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 13:26:18 +08)" raised an exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/price-service/pricetracker.py", line 17, in price_job
+    get_flash_deal()
+  File "/price-service/pricetracker.py", line 30, in get_flash_deal
+    req = requests.get(url)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries exceeded with url: /api/v2/flash_sale/get_items (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f4eaec43390>: Failed to establish a new connection: [Errno -2] Name does not resolve',))
+2020-05-25 13:26:18,273 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 14:26:18 +08)" (scheduled at 2020-05-25 13:26:18.265967+08:00)
+2020-05-25 13:26:18,275 -INFO - -----------Start time of job: 2020-05-25 13:26:18-----------
+2020-05-25 13:26:18,602 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 13:26:18,624 -INFO - 19 new flash deals items inserted into item table
+2020-05-25 13:26:18,625 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 13:26:18,687 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 13:36:13,801 -INFO - 123 items added into item_price table with their latest price
+2020-05-25 13:36:13,802 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 13:36:13,802 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 13:36:13,803 -INFO - -----------End time of job: 2020-05-25 13:36:13-----------
+2020-05-25 13:36:13,804 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 14:26:18 +08)" executed successfully
+2020-05-25 14:17:18,731 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 14:17:18,732 -INFO - Added job "price_job" to job store "default"
+2020-05-25 14:17:18,732 -INFO - Scheduler started
+2020-05-25 14:53:08,597 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 14:53:08,598 -INFO - Added job "price_job" to job store "default"
+2020-05-25 14:53:08,599 -INFO - Scheduler started
+2020-05-25 14:58:08,544 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 14:58:08 +08)" (scheduled at 2020-05-25 14:58:08.543659+08:00)
+2020-05-25 14:58:08,545 -INFO - -----------Start time of job: 2020-05-25 14:58:08-----------
+2020-05-25 14:58:09,970 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 14:58:10,094 -INFO - 109 new flash deals items inserted into item table
+2020-05-25 14:58:10,095 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 14:58:10,154 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 15:12:52,860 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 15:12:52,861 -INFO - Added job "price_job" to job store "default"
+2020-05-25 15:12:52,862 -INFO - Scheduler started
+2020-05-25 15:18:45,437 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 15:18:45,438 -INFO - Added job "price_job" to job store "default"
+2020-05-25 15:18:45,439 -INFO - Scheduler started
+2020-05-25 15:23:45,387 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 15:23:45 +08)" (scheduled at 2020-05-25 15:23:45.385258+08:00)
+2020-05-25 15:23:45,390 -INFO - -----------Start time of job: 2020-05-25 15:23:45-----------
+2020-05-25 15:23:46,564 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 15:23:46,683 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 15:23:46,684 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 15:23:46,739 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 15:26:35,177 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 15:26:35,179 -INFO - Added job "price_job" to job store "default"
+2020-05-25 15:26:35,180 -INFO - Scheduler started
+2020-05-25 15:46:49,282 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 15:46:49,284 -INFO - Added job "price_job" to job store "default"
+2020-05-25 15:46:49,284 -INFO - Scheduler started
+2020-05-25 16:04:33,097 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:04:33,099 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:04:33,099 -INFO - Scheduler started
+2020-05-25 16:08:48,001 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:08:48,002 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:08:48,003 -INFO - Scheduler started
+2020-05-25 16:10:25,808 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:10:25,810 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:10:25,810 -INFO - Scheduler started
+2020-05-25 16:12:32,984 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:12:32,985 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:12:32,986 -INFO - Scheduler started
+2020-05-25 16:21:14,644 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:21:14,645 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:21:14,646 -INFO - Scheduler started
+2020-05-25 16:22:39,460 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:22:39,461 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:22:39,462 -INFO - Scheduler started
+2020-05-25 16:33:58,844 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:33:58,847 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:33:58,847 -INFO - Scheduler started
+2020-05-25 16:36:44,412 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 16:36:44,413 -INFO - Added job "price_job" to job store "default"
+2020-05-25 16:36:44,414 -INFO - Scheduler started
+2020-05-25 16:41:44,346 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 16:41:44 +08)" (scheduled at 2020-05-25 16:41:44.340663+08:00)
+2020-05-25 16:41:44,349 -INFO - -----------Start time of job: 2020-05-25 16:41:44-----------
+2020-05-25 16:41:46,912 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 16:41:47,082 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 16:41:47,084 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 16:41:47,175 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 16:52:07,243 -INFO - 73 items added into item_price table with their latest price
+2020-05-25 16:52:07,243 -INFO - 99 new items inserted into item_price with their first price changelog
+2020-05-25 16:52:07,244 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 16:52:07,245 -INFO - -----------End time of job: 2020-05-25 16:52:07-----------
+2020-05-25 16:52:07,245 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 17:41:44 +08)" executed successfully
+2020-05-25 16:59:25,406 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 17:00:25,360 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 17:00:25,751 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 17:00:25,752 -INFO - Added job "price_job" to job store "default"
+2020-05-25 17:00:25,752 -INFO - Scheduler started
+2020-05-25 17:05:25,713 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 17:05:25 +08)" (scheduled at 2020-05-25 17:05:25.712184+08:00)
+2020-05-25 17:05:25,714 -INFO - -----------Start time of job: 2020-05-25 17:05:25-----------
+2020-05-25 17:05:26,913 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 17:05:27,025 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 17:05:27,070 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 17:05:27,134 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 17:15:43,410 -INFO - 4 items added into item_price table with their latest price
+2020-05-25 17:15:43,412 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 17:15:43,413 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 17:15:43,414 -INFO - -----------End time of job: 2020-05-25 17:15:43-----------
+2020-05-25 17:15:43,414 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 18:05:25 +08)" executed successfully

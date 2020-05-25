@@ -8,7 +8,8 @@ CREATE TABLE user (
     user_password CHAR(64) NOT NULL
 );
 
-CREATE UNIQUE INDEX user_index ON user (username);
+/* INDEX for username automatically created due to unique constraint */
+-- CREATE UNIQUE INDEX user_index ON user (username);
 
 /* CREATE user_item TABLE */
 CREATE TABLE user_item (

@@ -1,4 +1,4 @@
-from sqlConnector import initSQL
+import sqlConnector
 import mysql.connector
 from datetime import datetime
 import json
@@ -45,7 +45,7 @@ def get_flash_deal():
         temp = [item_id, shop_id, item_name, item_price]
         my_data.append(tuple(temp))
     try:
-        mydb = initSQL()
+        mydb = sqlConnector.connection_pool.get_connection() 
         mycursor = mydb.cursor(prepared=True)
         mycursor.executemany(sql, my_data)
     except mysql.connector.Error as err:
@@ -66,7 +66,7 @@ def update_items():
     """
     url = api + '/item/get'
     try:
-        mydb = initSQL()  
+        mydb = sqlConnector.connection_pool.get_connection()  
         mycursor = mydb.cursor(prepared=True)
         mycursor.execute("SELECT item_id, shop_id, price FROM item")
         myresult = mycursor.fetchall()
@@ -82,9 +82,8 @@ def update_items():
             json_data = json.loads(req.text)
             item = json_data['item']
             if item is None:
-                logging.error("Item not found!")
+                logging.error("Item not found! ItemID = %s, ShopID = %s", item_id, shop_id)
                 continue
-                item['itemid'], item['shopid'], item['price'], datetime.now()
             fetched_item_price = item['price']
             fetched_item_name = item['name']
             fetched_flash_sale = False if item['flash_sale'] == None else True

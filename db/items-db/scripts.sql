@@ -10,7 +10,8 @@ CREATE TABLE item (
     price INT NOT NULL
 );
 
-CREATE UNIQUE INDEX item_index ON item (item_id);
+/* INDEX for item_id automatically created due to unique constraint */
+-- CREATE UNIQUE INDEX item_index ON item (item_id);
 
 /* CREATE item_price TABLE */
 CREATE TABLE item_price (
