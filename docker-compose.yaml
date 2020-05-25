@@ -84,16 +84,50 @@ services:
     volumes:
       - ./user-service/logs:/user-service/logs
 
-  # item service with python
+  # load balancer for item service
   item-service:
+    image: haproxy
+    ports:
+        - "50051:50051"
+    depends_on:
+      - item-service1
+      - item-service2
+    volumes:
+        - ./haproxy:/usr/local/etc/haproxy
+
+  # item service with python
+  item-service1:
     build: ./item-service
     ports:
-      - "50051:50051"
+      - "1111:1111"
+    environment:
+      - APPID=1111
     depends_on:
       - items-db
     volumes:
       - ./item-service:/item-service
-    # command: ["./wait-for", "items-db:3306", "--", "python", "./service.py"]
+
+  # item service with python
+  item-service2:
+    build: ./item-service
+    ports:
+      - "2222:2222"
+    environment:
+      - APPID=2222
+    depends_on:
+      - items-db
+    volumes:
+      - ./item-service:/item-service
+  
+  # item service with python
+  # item-service:
+  #   build: ./item-service
+  #   ports:
+  #     - "50051:50051"
+  #   depends_on:
+  #     - items-db
+  #   volumes:
+  #     - ./item-service:/item-service
 
   # price service with python
   price-service:

@@ -12,8 +12,10 @@ import sqlConnector
 
 import mysql.connector
 
+import os
 import datetime
 
+appid = os.environ['APPID']
 class ItemService(item_pb2_grpc.ItemServiceServicer):
     def AddNewItem(self, request, context):
         url = 'https://shopee.sg/api/v2/item/get'
@@ -50,7 +52,7 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
 
     def ListAllItems(self, request, context):
         arr = []
-        logging.info("----------START: Listing all items----------")
+        logging.info("%s ----------START: Listing all items----------", appid)
         myresult = []
         try:
             # Get connection object from a pool
@@ -78,12 +80,12 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
             item_price = x[3]
             item = item_pb2.Item(item_id = item_id, shop_id = shop_id, item_name = item_name, item_price = item_price)
             arr.append(item)
-        logging.info("----------END: Listing all items----------")
+        logging.debug("%s ----------END: Listing all items----------", appid)
         return item_pb2.ListAllItemsResponse(message="success", items= arr)
 
     def ItemPrice(self, request, context):
         arr = []
-        logging.info("----------START: Obtaining price of item----------")
+        logging.info("%s ----------START: Obtaining price of item----------", appid)
         myresult = []
         try:
             # Get connection object from a pool
@@ -98,7 +100,7 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
             logging.exception("Failed ItemPrice Select :{}".format(err))
             return item_pb2.ItemPriceResponse(message="error")   
         finally:
-            logging.info('Success! Obtained %s prices for item %s' %mycursor.rowcount %item_id)
+            logging.debug('Success! Obtained %s prices for item %s', mycursor.rowcount, request.item_id)
             mycursor.close()  
             del mycursor
             mydb.close()
@@ -109,15 +111,17 @@ class ItemService(item_pb2_grpc.ItemServiceServicer):
                 flash_sale = x[2]
                 price = item_pb2.ItemPrice(price_datetime = item_date, price = item_price, flash_sale = flash_sale)
                 arr.append(price)
-        logging.info("ItemPrice Success!")
-        logging.info("----------END: Obtaining price of item----------")
+        logging.debug("ItemPrice Success!")
+        logging.debug("----------END: Obtaining price of item----------")
         return item_pb2.ItemPriceResponse(message="success", itemPrice= arr)
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=30))
     item_pb2_grpc.add_ItemServiceServicer_to_server(ItemService(), server)
-    server.add_insecure_port('[::]:50051')
+    # server.add_insecure_port('[::]:50051')
+    port = '[::]:'+ appid
+    server.add_insecure_port(port)
     server.start()
     server.wait_for_termination()
 

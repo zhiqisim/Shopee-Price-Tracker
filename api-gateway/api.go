@@ -15,6 +15,8 @@ import (
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+
+	// "github.com/processout/grpc-go-pool"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"google.golang.org/grpc"
 )
@@ -82,21 +84,7 @@ func main() {
 	// gRPC connection
 	// Port 4040 for User Service (Go)
 	// Port 50051 for Item Service (Python)
-	userHost := "user-service"
-	conn, err := grpc.Dial(userHost+":4040", grpc.WithInsecure())
-	if err != nil {
-		panic(err)
-	}
 
-	client := proto.NewUserServiceClient(conn)
-
-	itemHost := "item-service"
-	itemConn, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
-	if err != nil {
-		panic(err)
-	}
-
-	itemClient := proto.NewItemServiceClient(itemConn)
 	file, err := os.OpenFile("logs/app.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
@@ -107,6 +95,36 @@ func main() {
 	gin.DefaultWriter = io.MultiWriter(file, os.Stdout)
 	// router := gin.Default()
 	router := gin.New()
+
+	userHost := "user-service"
+	conn, err := grpc.Dial(userHost+":4040", grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+
+	client := proto.NewUserServiceClient(conn)
+
+	itemHost := "item-service"
+	// var factory grpcpool.Factory
+	// factory = func() (*grpc.ClientConn, error) {
+	// 	itemC, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
+	// 	if err != nil {
+	// 		log.Fatalf("Failed to start gRPC connection: %v", err)
+	// 	}
+	// 	return itemC, err
+	// }
+
+	// pool, err := grpcpool.New(factory, 5, 5, time.Second)
+	// if err != nil {
+	// 	log.Fatalf("Failed to create gRPC pool: %v", err)
+	// }
+	itemConn, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+
+	itemClient := proto.NewItemServiceClient(itemConn)
+
 	p := ginprometheus.NewPrometheus("gin")
 	// Preserving a low cardinality for the request counter - deleting query params
 	p.ReqCntURLLabelMappingFn = func(c *gin.Context) string {
@@ -118,7 +136,7 @@ func main() {
 	// - Credentials share disabled
 	// - Preflight requests cached for 12 hours
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowOrigins = []string{"http://localhost:3001"}
 	config.AllowCredentials = true
 	router.Use(cors.New(config))
 
@@ -321,6 +339,15 @@ func main() {
 				Output: NIL
 			*/
 
+			// // obtain connection from pool
+			// itemConn, err := pool.Get(c)
+			// defer itemConn.Close()
+			// if err != nil {
+			// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// 	return
+			// }
+			// itemClient := proto.NewItemServiceClient(itemConn)
+
 			// obtain username from session to track user
 			username := getUsername(c)
 
@@ -368,6 +395,17 @@ func main() {
 				Args: NIL
 				Output: JSON Object with list of all itmes
 			*/
+
+			// // obtain connection from pool
+			// itemConn, err := pool.Get(c)
+			// defer itemConn.Close()
+			// if err != nil {
+			// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// 	return
+			// }
+			// itemClient := proto.NewItemServiceClient(itemConn)
+
+			// obtain offset and limit from query params
 			offset := c.Query("offset")
 			limit := c.Query("limit")
 			o, err := strconv.Atoi(offset)
@@ -400,6 +438,15 @@ func main() {
 				Args: itemid
 				Output: JSON Object with list of all price history of item
 			*/
+
+			// // obtain connection from pool
+			// itemConn, err := pool.Get(c)
+			// defer itemConn.Close()
+			// if err != nil {
+			// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// 	return
+			// }
+			// itemClient := proto.NewItemServiceClient(itemConn)
 
 			itemID := c.Query("itemid")
 			req := &proto.ItemPriceRequest{ItemId: itemID}

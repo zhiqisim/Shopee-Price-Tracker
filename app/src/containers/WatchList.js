@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import API from "../utils/API";
 
+// infinitescroll component
+import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 import Header from '../components/Header';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,59 +49,106 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WatchList() {
-  const classes = useStyles();
+// const ARRAY_SIZE = 20;
 
-  // Set default as null so we
-  // know if it's still loading
-  const [watchListInfo, setWatchList] = useState(null);
-
-  // Initialize with listening to our
-  // API. The second argument
-  // with the empty array makes sure the
-  // function only executes once
-  useEffect(() => {
-    listenForWatchListInfo();
-  }, []);
-
-  const listenForWatchListInfo = () => {
+function loadItems(prevArray = [], startCursor = 0) {
+  return new Promise(resolve => {
+    let newArray = prevArray;
     const params = {
-      offset: 0,
+      offset: startCursor,
       limit: 20,
     };
     API.get('/user/watchlist', { withCredentials: true, params})
       .then(response => {
         console.log(response.data);
         if (response.data.message === "success") {
-          const allItems = [];
-          const jsonData = response.data.item_details;
-          if (jsonData != null){
-            jsonData.forEach((doc) => allItems.push(doc));
+            const jsonData = response.data.item_details;
+            jsonData.forEach((doc) => newArray.push(doc));
+            console.log(newArray);
           }
-          setWatchList(allItems)
-        }
+          resolve(newArray);
       })
       .catch(error => {
         console.log(error);
       });
+      
+    }
+  );
+}
+
+export default function WatchList() {
+  const classes = useStyles();
+
+  // Set default as null so we
+  // know if it's still loading
+  // const [watchListInfo, setWatchList] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+
+  // Initialize with listening to our
+  // API. The second argument
+  // with the empty array makes sure the
+  // function only executes once
+  // useEffect(() => {
+  //   listenForWatchListInfo();
+  // }, []);
+
+  // const listenForWatchListInfo = () => {
+  //   const params = {
+  //     offset: 0,
+  //     limit: 20,
+  //   };
+  //   API.get('/user/watchlist', { withCredentials: true, params})
+  //     .then(response => {
+  //       console.log(response.data);
+  //       if (response.data.message === "success") {
+  //         const allItems = [];
+  //         const jsonData = response.data.item_details;
+  //         if (jsonData != null){
+  //           jsonData.forEach((doc) => allItems.push(doc));
+  //         }
+  //         setWatchList(allItems)
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // if (!watchListInfo) {
+  //   return (
+  //     <div>
+  //       Please wait...
+  //     </div>
+  //   )
+  // }
+
+  function handleLoadMore() {
+    setLoading(true);
+    loadItems(items, items.length).then(newArray => {
+      setLoading(false);
+      setItems(newArray);
+    });
   }
 
-  if (!watchListInfo) {
-    return (
-      <div>
-        Please wait...
-      </div>
-    )
-  }
+  // useEffect(() => {
+  //   listenForItemInfo();
+  // }, [itemsInfo]);
+
+  const infiniteRef = useInfiniteScroll({
+    loading,
+    hasNextPage: true,
+    onLoadMore: handleLoadMore,
+  });
 
 
 
   return (
     <React.Fragment>
       <Header classes={classes} />
-      <List className={classes.root}>
+      <List ref={infiniteRef} className={classes.root}>
         <Container className={classes.listContainer} maxWidth="xs">
-          {watchListInfo.map(({ item_name, item_id }, index) => (
+          {items.map(({ item_name, item_id }, index) => (
             <React.Fragment key={index}>
               <Card className={classes.card}>
                 <CardContent className={classes.cardContent}>

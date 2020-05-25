@@ -363,3 +363,132 @@ ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries ex
 2020-05-25 17:15:43,413 -INFO - -----------END: Updating item_price data!-----------
 2020-05-25 17:15:43,414 -INFO - -----------End time of job: 2020-05-25 17:15:43-----------
 2020-05-25 17:15:43,414 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 18:05:25 +08)" executed successfully
+2020-05-25 18:05:21,708 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 18:06:21,673 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 18:06:21,994 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 18:06:21,995 -INFO - Added job "price_job" to job store "default"
+2020-05-25 18:06:21,996 -INFO - Scheduler started
+2020-05-25 18:12:48,604 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 18:13:48,596 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 18:13:48,886 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 18:13:48,887 -INFO - Added job "price_job" to job store "default"
+2020-05-25 18:13:48,888 -INFO - Scheduler started
+2020-05-25 18:18:48,858 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 18:18:48 +08)" (scheduled at 2020-05-25 18:18:48.851031+08:00)
+2020-05-25 18:18:48,861 -INFO - -----------Start time of job: 2020-05-25 18:18:48-----------
+2020-05-25 18:18:49,510 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 18:18:49,648 -INFO - 122 new flash deals items inserted into item table
+2020-05-25 18:18:49,692 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 18:18:49,756 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 18:29:55,267 -INFO - 193 items added into item_price table with their latest price
+2020-05-25 18:29:55,269 -INFO - 116 new items inserted into item_price with their first price changelog
+2020-05-25 18:29:55,269 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 18:29:55,270 -INFO - -----------End time of job: 2020-05-25 18:29:55-----------
+2020-05-25 18:29:55,271 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 19:18:48 +08)" executed successfully
+2020-05-25 18:52:34,246 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 18:53:34,202 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 18:53:34,611 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 18:53:34,612 -INFO - Added job "price_job" to job store "default"
+2020-05-25 18:53:34,612 -INFO - Scheduler started
+2020-05-25 18:58:34,569 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 18:58:34 +08)" (scheduled at 2020-05-25 18:58:34.567634+08:00)
+2020-05-25 18:58:34,570 -INFO - -----------Start time of job: 2020-05-25 18:58:34-----------
+2020-05-25 18:58:35,822 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 18:58:35,937 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 18:58:35,981 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 18:58:36,047 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 19:09:06,036 -INFO - 3 items added into item_price table with their latest price
+2020-05-25 19:09:06,037 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 19:09:06,037 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 19:09:06,038 -INFO - -----------End time of job: 2020-05-25 19:09:06-----------
+2020-05-25 19:09:06,039 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 19:58:34 +08)" executed successfully
+2020-05-25 19:46:05,795 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 19:47:05,838 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 19:47:06,288 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 19:47:06,289 -INFO - Added job "price_job" to job store "default"
+2020-05-25 19:47:06,289 -INFO - Scheduler started
+2020-05-25 19:52:06,253 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 19:52:06 +08)" (scheduled at 2020-05-25 19:52:06.248577+08:00)
+2020-05-25 19:52:06,255 -INFO - -----------Start time of job: 2020-05-25 19:52:06-----------
+2020-05-25 19:52:07,827 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 19:52:07,949 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 19:52:07,995 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 19:52:08,062 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 19:54:09,457 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 19:55:09,461 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 19:55:09,760 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 19:55:09,760 -INFO - Added job "price_job" to job store "default"
+2020-05-25 19:55:09,761 -INFO - Scheduler started
+2020-05-25 20:00:09,730 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 20:00:09 +08)" (scheduled at 2020-05-25 20:00:09.724018+08:00)
+2020-05-25 20:00:09,732 -INFO - -----------Start time of job: 2020-05-25 20:00:09-----------
+2020-05-25 20:00:10,267 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 20:00:10,377 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 20:00:10,421 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 20:00:10,490 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 20:11:04,197 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:12:04,204 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:12:04,614 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:12:04,615 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:12:04,616 -INFO - Scheduler started
+2020-05-25 20:12:25,458 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:13:25,444 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:13:25,741 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:13:25,742 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:13:25,743 -INFO - Scheduler started
+2020-05-25 20:18:25,722 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 20:18:25 +08)" (scheduled at 2020-05-25 20:18:25.705808+08:00)
+2020-05-25 20:18:25,725 -INFO - -----------Start time of job: 2020-05-25 20:18:25-----------
+2020-05-25 20:18:26,847 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 20:18:27,030 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 20:18:27,074 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 20:18:27,155 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 20:20:34,456 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:21:00,659 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:22:00,612 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:22:00,961 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:22:00,962 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:22:00,963 -INFO - Scheduler started
+2020-05-25 20:22:27,630 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:23:27,628 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:23:28,017 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:23:28,018 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:23:28,018 -INFO - Scheduler started
+2020-05-25 20:29:46,917 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:30:46,901 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:30:47,260 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:30:47,260 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:30:47,260 -INFO - Scheduler started
+2020-05-25 20:32:01,256 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:33:01,244 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:33:01,602 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:33:01,603 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:33:01,603 -INFO - Scheduler started
+2020-05-25 20:37:55,329 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:38:55,287 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:38:55,681 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:38:55,685 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:38:55,686 -INFO - Scheduler started
+2020-05-25 20:43:55,635 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 20:43:55 +08)" (scheduled at 2020-05-25 20:43:55.633687+08:00)
+2020-05-25 20:43:55,636 -INFO - -----------Start time of job: 2020-05-25 20:43:55-----------
+2020-05-25 20:43:56,751 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 20:43:56,887 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 20:43:56,933 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 20:43:56,997 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 20:44:50,930 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:45:50,928 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:45:51,325 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:45:51,326 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:45:51,326 -INFO - Scheduler started
+2020-05-25 20:50:51,289 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 20:50:51 +08)" (scheduled at 2020-05-25 20:50:51.284884+08:00)
+2020-05-25 20:50:51,291 -INFO - -----------Start time of job: 2020-05-25 20:50:51-----------
+2020-05-25 20:50:52,547 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 20:50:52,745 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 20:50:52,789 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 20:50:52,845 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 20:56:11,233 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 20:57:11,224 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 20:57:11,518 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 20:57:11,519 -INFO - Added job "price_job" to job store "default"
+2020-05-25 20:57:11,520 -INFO - Scheduler started
+2020-05-25 21:02:11,488 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 21:02:11 +08)" (scheduled at 2020-05-25 21:02:11.484143+08:00)
+2020-05-25 21:02:11,490 -INFO - -----------Start time of job: 2020-05-25 21:02:11-----------
+2020-05-25 21:02:12,565 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 21:02:12,739 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 21:02:12,783 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 21:02:12,876 -INFO - -----------START: Updating item_price data!-----------

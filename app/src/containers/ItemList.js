@@ -10,12 +10,12 @@ import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import API from "../utils/API";
+import { Link } from 'react-router-dom';
 
 import Header from '../components/Header';
 import { AuthContext } from "../utils/Auth.js";
 
 // infinitescroll component
-// import InfiniteScroll from 'react-infinite-scroller';
 import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,17 +44,21 @@ const useStyles = makeStyles((theme) => ({
   },
   cardButton: {
     horizontalAlign: "right",
-  }
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+    textDecoration: "none"
+  },
 }));
 
 
-const ARRAY_SIZE = 20;
+// const ARRAY_SIZE = 40;
 
 function loadItems(prevArray = [], startCursor = 0) {
   return new Promise(resolve => {
     let newArray = prevArray;
     const params = {
-      offset: startCursor + ARRAY_SIZE,
+      offset: startCursor,
       limit: 40,
     };
     API.get('/item/get-items', { params })
@@ -217,6 +221,11 @@ export default function ItemsList() {
                 <Button size="small" color="primary" variant="outlined" className={classes.cardButton} onClick={addItem.bind(this, item_id, item_name)}>
                   Add to Watchlist
                   </Button>
+                  <Link to={'/price/' + item_id} className={classes.link}>
+                    <Button size="small" color="primary" variant="outlined" className={classes.cardButton}>
+                      View Price Changelog
+                  </Button>
+                  </Link>
               </CardActions>
             </Card>
           ))}
