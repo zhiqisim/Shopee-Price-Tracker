@@ -16,24 +16,54 @@ View the documentations in the /Documents directory
 4. Concluding Report
 
 ## Services
-1. app - Nginx & React
-    - Nginx load balances and reverse proxy to api-gateway
-    - Access frontend on localhost
-    - Access API on localhost/api
-2. api-gateway - gateway to all API endpoints
-    - api-gateway1 - server 1 (Golang/Gin)
-    - api-gateway2 - server 2 (Golang/Gin)
-4. user-service - service for user functionality (Golang)
-5. item-service - service for item functionality
-    - load balancer for item-service (HaProxy)
-    - item-service1 - server 1 (Python)
-    - item-service2 - server 2 (Python)
-6. price-service - service to retrieve data from Shopee API (Python)
-7. user-db - database for user data (MySQL)
-8. items-db - database for item data (MySQL)
-9. prom - prometheus gateway for metrics tracking
-10. grafana - grafana dashboard for metrics tracking
-11. cadvisor - monitoring for docker containers
+1. app
+    - Use as a router to route request to frontend and api-gateway
+    - Built with Nginx
+    - Frontend built with React
+    - Frontend accessed with http://localhost
+    - Api-gateway accessed with http://localhost/api
+    - Use as a load balancer for api-gateway to balance request between 2 api-gateway servers
+2. Api-gateway
+    - Use as a gateway for all API endpoints
+    - Built in Golang & Gin
+    - 2 instance of api-gateway running for load to be balanced between
+    - Passes each request to their respective services
+    - Connected to respective services via gRPC acting as a gRPC client
+3. Redis-user-sessions
+    - Use as a cache for api-gateway
+    - Store user sessions 
+4. User-service
+    - Service for user functionalities
+    - Built with Golang
+    - Connected to user-db via TCP
+    - Connected to api-gateway via gRPC acting as a gRPC server
+5. Item-service
+    - Service for item functionalities
+    - Built with Python
+    - Connected to items-db via TCP
+    - There is a load balancer using HaProxy to balance load between 2 instances of item-service
+    - Connected to api-gateway via gRPC acting as a gRPC server
+6. Price-service
+    - Service to retrieve data from Shopee API
+    - Built with Python
+    - Connected to items-db via TCP
+7. User-db
+    - Database for user data
+    - Using MySQL as DBMS
+    - User table to store information of all user login credentials 
+    - UserItems table to store information of all user’s watchlist items
+8. Items-db
+    - Database for item data
+    - Using MySQL as DBMS
+    - Item table to store information of item details
+    - ItemPrice table to store price changelog of items
+9. Prom
+    - Prometheus gateway for metrics tracking
+10. Grafana
+    - Grafana dashboard for metrics tracking
+11. Cadvisor
+    - Monitoring for docker containers
+
 
 ## Logs
 View logs at each service directories in the /log folder. 
