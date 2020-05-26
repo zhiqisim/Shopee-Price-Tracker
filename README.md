@@ -59,10 +59,13 @@ View the documentations in the /Documents directory
     - ItemPrice table to store price changelog of items
 9. Prom
     - Prometheus gateway for metrics tracking
+    - Access with localhost:9090
 10. Grafana
     - Grafana dashboard for metrics tracking
+    - Access with localhost:3000
 11. Cadvisor
     - Monitoring for docker containers
+    - Access with localhost:8080
 
 
 ## Logs
