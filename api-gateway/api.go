@@ -220,7 +220,7 @@ func main() {
 		Service: User
 	*/
 	user := router.Group("/user")
-	user.Use(authRequired())
+	// user.Use(authRequired())
 	{
 
 		user.GET("/is-auth", func(c *gin.Context) {

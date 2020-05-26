@@ -492,3 +492,102 @@ ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries ex
 2020-05-25 21:02:12,739 -INFO - 0 new flash deals items inserted into item table
 2020-05-25 21:02:12,783 -INFO - -----------END: Updating item data with new Flash Deals!-----------
 2020-05-25 21:02:12,876 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 21:05:02,750 -INFO - 0 items added into item_price table with their latest price
+2020-05-25 21:05:02,751 -INFO - 0 new items inserted into item_price with their first price changelog
+2020-05-25 21:05:02,752 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 21:05:02,760 -ERROR - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 22:02:11 +08)" raised an exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/price-service/pricetracker.py", line 18, in price_job
+    update_items()
+  File "/price-service/pricetracker.py", line 80, in update_items
+    req = requests.get(url, params={'itemid': item_id, 'shopid': shop_id})
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/adapters.py", line 498, in send
+    raise ConnectionError(err, request=request)
+ConnectionError: ('Connection aborted.', BadStatusLine('No status line received - the server has closed the connection',))
+2020-05-25 21:47:11,262 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 21:48:11,211 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 21:48:11,631 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 21:48:11,632 -INFO - Added job "price_job" to job store "default"
+2020-05-25 21:48:11,633 -INFO - Scheduler started
+2020-05-25 21:53:11,593 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 21:53:11 +08)" (scheduled at 2020-05-25 21:53:11.591927+08:00)
+2020-05-25 21:53:11,595 -INFO - -----------Start time of job: 2020-05-25 21:53:11-----------
+2020-05-25 21:53:12,198 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 21:53:12,318 -INFO - 0 new flash deals items inserted into item table
+2020-05-25 21:53:12,364 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 21:53:12,425 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 21:54:55,360 -ERROR - Item not found! ItemID = 3713520061, ShopID = 1175477
+2020-05-25 22:04:33,143 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 22:05:33,145 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 22:05:33,425 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 22:05:33,426 -INFO - Added job "price_job" to job store "default"
+2020-05-25 22:05:33,426 -INFO - Scheduler started
+2020-05-25 22:10:33,392 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 22:10:33 +08)" (scheduled at 2020-05-25 22:10:33.390398+08:00)
+2020-05-25 22:10:33,394 -INFO - -----------Start time of job: 2020-05-25 22:10:33-----------
+2020-05-25 22:10:34,365 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-25 22:10:34,468 -INFO - 101 new flash deals items inserted into item table
+2020-05-25 22:10:34,513 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-25 22:10:34,574 -INFO - -----------START: Updating item_price data!-----------
+2020-05-25 22:12:30,415 -ERROR - Item not found! ItemID = 3713520061, ShopID = 1175477
+2020-05-25 22:21:55,861 -INFO - 193 items added into item_price table with their latest price
+2020-05-25 22:21:55,863 -INFO - 98 new items inserted into item_price with their first price changelog
+2020-05-25 22:21:55,863 -INFO - -----------END: Updating item_price data!-----------
+2020-05-25 22:21:55,864 -INFO - -----------End time of job: 2020-05-25 22:21:55-----------
+2020-05-25 22:21:55,864 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-25 23:10:33 +08)" executed successfully
+2020-05-25 23:05:48,500 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-25 23:06:48,506 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-25 23:06:48,908 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-25 23:06:48,909 -INFO - Added job "price_job" to job store "default"
+2020-05-25 23:06:48,910 -INFO - Scheduler started
+2020-05-26 09:05:37,287 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 09:06:37,261 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 09:06:37,607 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 09:06:37,608 -INFO - Added job "price_job" to job store "default"
+2020-05-26 09:06:37,609 -INFO - Scheduler started
+2020-05-26 09:11:37,573 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 09:11:37 +08)" (scheduled at 2020-05-26 09:11:37.571621+08:00)
+2020-05-26 09:11:37,574 -INFO - -----------Start time of job: 2020-05-26 09:11:37-----------
+2020-05-26 09:11:37,594 -ERROR - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 10:11:37 +08)" raised an exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/price-service/pricetracker.py", line 17, in price_job
+    get_flash_deal()
+  File "/price-service/pricetracker.py", line 30, in get_flash_deal
+    req = requests.get(url)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries exceeded with url: /api/v2/flash_sale/get_items (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb8a86b6c90>: Failed to establish a new connection: [Errno -2] Name does not resolve',))
+2020-05-26 09:42:58,690 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 09:43:58,680 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 09:43:58,977 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 09:43:58,977 -INFO - Added job "price_job" to job store "default"
+2020-05-26 09:43:58,978 -INFO - Scheduler started
+2020-05-26 09:48:58,943 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 09:48:58 +08)" (scheduled at 2020-05-26 09:48:58.940072+08:00)
+2020-05-26 09:48:58,945 -INFO - -----------Start time of job: 2020-05-26 09:48:58-----------
+2020-05-26 09:48:59,888 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-26 09:48:59,999 -INFO - 80 new flash deals items inserted into item table
+2020-05-26 09:49:00,046 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-26 09:49:00,118 -INFO - -----------START: Updating item_price data!-----------
+2020-05-26 09:50:51,860 -ERROR - Item not found! ItemID = 3713520061, ShopID = 1175477
+2020-05-26 10:01:44,700 -INFO - 213 items added into item_price table with their latest price
+2020-05-26 10:01:44,707 -INFO - 78 new items inserted into item_price with their first price changelog
+2020-05-26 10:01:44,708 -INFO - -----------END: Updating item_price data!-----------
+2020-05-26 10:01:44,709 -INFO - -----------End time of job: 2020-05-26 10:01:44-----------
+2020-05-26 10:01:44,709 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 10:48:58 +08)" executed successfully
