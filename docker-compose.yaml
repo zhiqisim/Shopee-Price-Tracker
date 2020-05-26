@@ -9,7 +9,8 @@ services:
     ports:
      - 9090:9090
     depends_on:
-     - api-gateway
+     - api-gateway1
+     - api-gateway2
      - cadvisor
   
   # grafana for dashboard of metrics monitoring
@@ -36,7 +37,8 @@ services:
     depends_on:
     - redis-user-sessions
     - app
-    - api-gateway
+    - api-gateway1
+    - api-gateway2
     - user-service
     - item-service
     - price-service
@@ -49,16 +51,19 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - api-gateway
+      - api-gateway1
+      - api-gateway2
     volumes:
       - ./app/logs:/var/log/nginx
 
-  # api-gateway with GO
-  api-gateway:
+
+  # (server1) api-gateway with GO
+  api-gateway1:
     build: ./api-gateway
     environment:
       - REDISPORT=6379
       - REDISHOST=redis-user-sessions
+      - APPID=8000
     ports:
       - "8000:8000"
     depends_on:
@@ -67,6 +72,37 @@ services:
       - redis-user-sessions
     volumes:
       - ./api-gateway/logs:/api/logs
+
+  # (server2) api-gateway with GO
+  api-gateway2:
+    build: ./api-gateway
+    environment:
+      - REDISPORT=6379
+      - REDISHOST=redis-user-sessions
+      - APPID=8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      - user-service
+      - item-service
+      - redis-user-sessions
+    volumes:
+      - ./api-gateway/logs:/api/logs
+
+  # # api-gateway with GO
+  # api-gateway:
+  #   build: ./api-gateway
+  #   environment:
+  #     - REDISPORT=6379
+  #     - REDISHOST=redis-user-sessions
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - user-service
+  #     - item-service
+  #     - redis-user-sessions
+  #   volumes:
+  #     - ./api-gateway/logs:/api/logs
 
   # redis cache for user session management
   redis-user-sessions:
@@ -97,7 +133,7 @@ services:
     volumes:
         - ./haproxy:/usr/local/etc/haproxy
 
-  # item service with python
+  # (server1) item service with python
   item-service1:
     build: ./item-service
     ports:
@@ -109,7 +145,7 @@ services:
     volumes:
       - ./item-service:/item-service
 
-  # item service with python
+  # (server2) item service with python
   item-service2:
     build: ./item-service
     ports:

@@ -603,3 +603,57 @@ ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries ex
 2020-05-26 11:02:45,990 -INFO - -----------END: Updating item_price data!-----------
 2020-05-26 11:02:45,991 -INFO - -----------End time of job: 2020-05-26 11:02:45-----------
 2020-05-26 11:02:45,991 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 11:48:58 +08)" executed successfully
+2020-05-26 11:32:00,657 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 11:33:00,643 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 11:33:01,052 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 11:33:01,052 -INFO - Added job "price_job" to job store "default"
+2020-05-26 11:33:01,053 -INFO - Scheduler started
+2020-05-26 11:37:00,473 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 11:38:00,444 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 11:38:00,871 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 11:38:00,872 -INFO - Added job "price_job" to job store "default"
+2020-05-26 11:38:00,873 -INFO - Scheduler started
+2020-05-26 11:41:41,422 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 11:42:41,417 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 11:42:41,683 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 11:42:41,684 -INFO - Added job "price_job" to job store "default"
+2020-05-26 11:42:41,684 -INFO - Scheduler started
+2020-05-26 11:46:47,592 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 12:14:00,387 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 12:16:34,186 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 12:17:34,167 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 12:17:34,554 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 12:17:34,554 -INFO - Added job "price_job" to job store "default"
+2020-05-26 12:17:34,555 -INFO - Scheduler started
+2020-05-26 12:22:34,519 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 12:22:34 +08)" (scheduled at 2020-05-26 12:22:34.517912+08:00)
+2020-05-26 12:22:34,521 -INFO - -----------Start time of job: 2020-05-26 12:22:34-----------
+2020-05-26 12:22:34,544 -ERROR - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 13:22:34 +08)" raised an exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/price-service/pricetracker.py", line 17, in price_job
+    get_flash_deal()
+  File "/price-service/pricetracker.py", line 30, in get_flash_deal
+    req = requests.get(url)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries exceeded with url: /api/v2/flash_sale/get_items (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f2cf6a95950>: Failed to establish a new connection: [Errno -2] Name does not resolve',))
+2020-05-26 12:29:27,663 -INFO - Trying to connect to SQL_Connection_Pool!
+2020-05-26 12:30:27,620 -INFO - Connection Pool Name - SQL_connection_pool | Connection Pool size - 1
+2020-05-26 12:30:28,063 -INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2020-05-26 12:30:28,064 -INFO - Added job "price_job" to job store "default"
+2020-05-26 12:30:28,064 -INFO - Scheduler started
+2020-05-26 12:35:28,020 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 13:35:28 +08)" (scheduled at 2020-05-26 12:35:28.015370+08:00)
+2020-05-26 12:35:28,022 -INFO - -----------Start time of job: 2020-05-26 12:35:28-----------
+2020-05-26 12:35:28,859 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-26 12:35:29,287 -INFO - 85 new flash deals items inserted into item table
+2020-05-26 12:35:29,340 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-26 12:35:29,791 -INFO - -----------START: Updating item_price data!-----------

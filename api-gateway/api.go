@@ -26,6 +26,8 @@ var (
 	RedisHost = os.Getenv("REDISHOST")
 	//RedisPort ...
 	RedisPort = os.Getenv("REDISPORT")
+	// Server Port
+	serverPort = os.Getenv("APPID")
 )
 
 func authRequired() gin.HandlerFunc {
@@ -162,7 +164,7 @@ func main() {
 		API-gateway Endpoints
 	*/
 
-	router.POST("/login", func(c *gin.Context) {
+	router.POST("/api/login", func(c *gin.Context) {
 		/*
 			Description: Allow user to login and obtain auth session
 			Input: Form body - username, password
@@ -196,7 +198,7 @@ func main() {
 		}
 	})
 
-	router.POST("/signup", func(c *gin.Context) {
+	router.POST("/api/signup", func(c *gin.Context) {
 		/*
 			Description: Allow user to signup
 			Input: Form body - username, password
@@ -219,7 +221,7 @@ func main() {
 		Group: user (Auth required)
 		Service: User
 	*/
-	user := router.Group("/user")
+	user := router.Group("/api/user")
 	// user.Use(authRequired())
 	{
 
@@ -386,7 +388,7 @@ func main() {
 		Group: items (no auth required)
 		Item Service
 	*/
-	items := router.Group("/item")
+	items := router.Group("/api/item")
 	{
 
 		items.GET("/get-items", func(c *gin.Context) {
@@ -461,5 +463,6 @@ func main() {
 		})
 	}
 
-	router.Run(":8000")
+	// router.Run(":8000")
+	router.Run(":" + serverPort)
 }
