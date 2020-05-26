@@ -2,6 +2,34 @@
 
 Entry task for new hires in the WSA team
 
+## Deployment
+Run the following batch script to deploy the docker containers
+```
+$ ./setup.sh
+```
+## Services
+1. app - Nginx & React () 
+    - Nginx load balances and reverse proxy to api-gateway
+    - Access frontend on localhost
+    - Access API on localhost/api
+2. api-gateway - gateway to all API endpoints
+    - api-gateway1 - server 1 (Golang/Gin)
+    - api-gateway2 - server 2 (Golang/Gin)
+4. user-service - service for user functionality (Golang)
+5. item-service - service for item functionality
+    - load balancer for item-service (HaProxy)
+    - item-service1 - server 1 (Python)
+    - item-service2 - server 2 (Python)
+6. price-service - service to retrieve data from Shopee API (Python)
+7. user-db - database for user data (MySQL)
+8. items-db - database for item data (MySQL)
+9. prom - prometheus gateway for metrics tracking
+10. grafana - grafana dashboard for metrics tracking
+11. cadvisor - monitoring for docker containers
+
+## Logs
+View logs at each service directories in the /log folder. 
+
 ## Business Requirement
     1. Our system needs to support register and login. Use could only access other API after login.
     2. Different users might be interested in different products. User will submit the product by its item detail page URL.

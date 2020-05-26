@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import API from "../utils/API";
 
-import { LineChart, Line, XAxis, YAxis, Label } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 
 import Header from '../components/Header';
 
@@ -146,8 +146,7 @@ export default function Price(props) {
                     left: 70,
                 }}
             >
-                <XAxis dataKey="price_datetime" stroke={theme.palette.text.secondary}>
-                </XAxis>
+                <XAxis dataKey="price_datetime" stroke={theme.palette.text.secondary}/>
                 <YAxis dataKey="price" stroke={theme.palette.text.secondary}>
                     <Label
                         angle={270}
@@ -157,7 +156,7 @@ export default function Price(props) {
                         Price Changelog
             </Label>
                 </YAxis>
-                <Line type="monotone" dataKey="price" stroke={theme.palette.primary.main} dot={true} />
+                <Line animationDuration={10} type="monotone" dataKey="price" stroke={theme.palette.primary.main} dot={true} />
             </LineChart>
             </CardContent>
             </Card>

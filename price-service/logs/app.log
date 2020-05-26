@@ -591,3 +591,10 @@ ConnectionError: HTTPSConnectionPool(host='shopee.sg', port=443): Max retries ex
 2020-05-26 10:01:44,708 -INFO - -----------END: Updating item_price data!-----------
 2020-05-26 10:01:44,709 -INFO - -----------End time of job: 2020-05-26 10:01:44-----------
 2020-05-26 10:01:44,709 -INFO - Job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 10:48:58 +08)" executed successfully
+2020-05-26 10:48:58,949 -INFO - Running job "price_job (trigger: interval[1:00:00], next run at: 2020-05-26 11:48:58 +08)" (scheduled at 2020-05-26 10:48:58.940072+08:00)
+2020-05-26 10:48:58,951 -INFO - -----------Start time of job: 2020-05-26 10:48:58-----------
+2020-05-26 10:48:59,676 -INFO - -----------START: Updating item data with new Flash Deals!-----------
+2020-05-26 10:48:59,765 -INFO - 0 new flash deals items inserted into item table
+2020-05-26 10:48:59,809 -INFO - -----------END: Updating item data with new Flash Deals!-----------
+2020-05-26 10:48:59,884 -INFO - -----------START: Updating item_price data!-----------
+2020-05-26 10:51:20,019 -ERROR - Item not found! ItemID = 3713520061, ShopID = 1175477
