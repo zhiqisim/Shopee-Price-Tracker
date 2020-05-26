@@ -1,5 +1,0 @@
-2020/05/26 11:32:02 [emerg] 1#1: invalid host in upstream "api-gateway:8000/" in /etc/nginx/nginx.conf:26
-2020/05/26 11:37:02 [emerg] 1#1: invalid host in upstream "api-gateway:8000/" in /etc/nginx/nginx.conf:26
-2020/05/26 11:41:42 [emerg] 1#1: invalid host in upstream "http://api-gateway:8000/" in /etc/nginx/nginx.conf:26
-2020/05/26 11:46:53 [emerg] 1#1: invalid host in upstream "api-gateway1:8000/" in /etc/nginx/nginx.conf:26
-2020/05/26 12:14:01 [emerg] 1#1: invalid host in upstream "api-gateway1:8000/" in /etc/nginx/nginx.conf:26
