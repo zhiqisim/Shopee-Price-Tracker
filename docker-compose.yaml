@@ -40,7 +40,7 @@ services:
     - api-gateway1
     - api-gateway2
     - user-service
-    - item-service
+    - item-service-lb
     - price-service
     - user-db
     - items-db
@@ -64,11 +64,13 @@ services:
       - REDISPORT=6379
       - REDISHOST=redis-user-sessions
       - APPID=8000
+      - USERHOST=user-service:4040
+      - ITEMHOST=item-service-lb:50051
     ports:
       - "8000:8000"
     depends_on:
       - user-service
-      - item-service
+      - item-service-lb
       - redis-user-sessions
     volumes:
       - ./api-gateway/logs:/api/logs
@@ -80,11 +82,13 @@ services:
       - REDISPORT=6379
       - REDISHOST=redis-user-sessions
       - APPID=8001
+      - USERHOST=user-service:4040
+      - ITEMHOST=item-service-lb:50051
     ports:
       - "8001:8001"
     depends_on:
       - user-service
-      - item-service
+      - item-service-lb
       - redis-user-sessions
     volumes:
       - ./api-gateway/logs:/api/logs
@@ -117,13 +121,17 @@ services:
     build: ./user-service
     ports:
       - "4040:4040"
+    environment:
+      - APPID=4040
+      - DBPASS=root
+      - DBHOST=user-db:3306
     depends_on:
       - user-db
     volumes:
       - ./user-service/logs:/user-service/logs
 
   # load balancer for item service
-  item-service:
+  item-service-lb:
     image: haproxy
     ports:
         - "50051:50051"
@@ -140,6 +148,9 @@ services:
       - "1111:1111"
     environment:
       - APPID=1111
+      - DBPASS=root
+      - DBHOST=items-db
+      - DBPORT=3306
     depends_on:
       - items-db
     volumes:
@@ -152,6 +163,9 @@ services:
       - "2222:2222"
     environment:
       - APPID=2222
+      - DBPASS=root
+      - DBHOST=items-db
+      - DBPORT=3306
     depends_on:
       - items-db
     volumes:
@@ -172,6 +186,10 @@ services:
     build: ./price-service
     depends_on:
       - items-db
+    environment:
+      - DBPASS=root
+      - DBHOST=items-db
+      - DBPORT=3306
     volumes:
       - ./price-service:/price-service
 

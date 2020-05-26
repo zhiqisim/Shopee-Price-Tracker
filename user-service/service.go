@@ -18,6 +18,15 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+var (
+	// Server Port
+	serverPort = os.Getenv("APPID")
+	// DB password
+	dbPass = os.Getenv("DBPASS")
+	// DB host
+	dbHost = os.Getenv("DBHOST")
+)
+
 type server struct{}
 
 var db *sql.DB
@@ -25,8 +34,8 @@ var db *sql.DB
 func initializeMySQL() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s",
 		"root",
-		"root",
-		"user-db:3306",
+		dbPass,
+		dbHost,
 		"userdb",
 		"parseTime=true")
 	dBConnection, err := sql.Open("mysql", dsn)
@@ -58,7 +67,7 @@ func main() {
 	mw := io.MultiWriter(os.Stdout, file)
 	log.SetOutput(mw)
 	initializeMySQL()
-	listener, err := net.Listen("tcp", ":4040")
+	listener, err := net.Listen("tcp", ":"+serverPort)
 	if err != nil {
 		log.Panic(err)
 	}

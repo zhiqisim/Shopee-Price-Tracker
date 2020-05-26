@@ -28,6 +28,10 @@ var (
 	RedisPort = os.Getenv("REDISPORT")
 	// Server Port
 	serverPort = os.Getenv("APPID")
+	// user service host
+	userHost = os.Getenv("USERHOST")
+	// item service host
+	itemHost = os.Getenv("ITEMHOST")
 )
 
 func authRequired() gin.HandlerFunc {
@@ -98,15 +102,13 @@ func main() {
 	// router := gin.Default()
 	router := gin.New()
 
-	userHost := "user-service"
-	conn, err := grpc.Dial(userHost+":4040", grpc.WithInsecure())
+	conn, err := grpc.Dial(userHost, grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
 
 	client := proto.NewUserServiceClient(conn)
 
-	itemHost := "item-service"
 	// var factory grpcpool.Factory
 	// factory = func() (*grpc.ClientConn, error) {
 	// 	itemC, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
@@ -120,7 +122,7 @@ func main() {
 	// if err != nil {
 	// 	log.Fatalf("Failed to create gRPC pool: %v", err)
 	// }
-	itemConn, err := grpc.Dial(itemHost+":50051", grpc.WithInsecure())
+	itemConn, err := grpc.Dial(itemHost, grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
