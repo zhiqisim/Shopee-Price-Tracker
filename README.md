@@ -7,8 +7,16 @@ Run the following batch script to deploy the docker containers
 ```
 $ ./setup.sh
 ```
+
+## Documentation
+View the documentations in the /Documents directory
+1. Design Document 
+2. API Document
+3. Performance Test Report
+4. Concluding Report
+
 ## Services
-1. app - Nginx & React () 
+1. app - Nginx & React
     - Nginx load balances and reverse proxy to api-gateway
     - Access frontend on localhost
     - Access API on localhost/api
@@ -53,3 +61,8 @@ View logs at each service directories in the /log folder.
     5. Grafana + Prometheus need to be used to monitor the API(HTTP/RPC) traffic
     6. Redis is used as cache.
     7. The whole system should be deployed in single docker container or VirtualDev environment (VirtualDev / VM)
+
+## Perfermance Requirement
+    1. Do stress test and try to support as much as QPS as you can.
+    2. You need to find out the bottleneck and try to solve it until nothing could be improved.
+    3. Metrics may include requests count, response latency, response status code, response size and etc for different endpoint and instances. CPU, memory usage, network usage, IO usage of the process and system during testing.
