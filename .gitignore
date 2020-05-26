@@ -3,3 +3,4 @@ third_party
 logs
 data
 *.pyc
+grafana.db
